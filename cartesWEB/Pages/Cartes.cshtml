@@ -8,15 +8,106 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-    <title></title>
+<<head>
+  <meta charset="UTF-8">
+  <title>Reigns Clone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .stat { 
+      position: relative;
+      overflow: visible !important; 
+    }
+    
+    .indicator {
+      position: absolute;
+      top: -15px; 
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      font-size: 24px;
+      line-height: 24px;
+      color: #f7f4bf;
+      opacity: 0;
+      transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.1s ease;
+      pointer-events: none;
+      text-shadow: 0px 1px 3px rgba(0,0,0,0.5); 
+      z-index: 999;
+    }
+  </style>
 </head>
 <body>
-<div>
-    @foreach (var c in Model.cartes)
-    {
-        <p>@c.CartaId és @c.Character con texto @c.Text</p>
-    }
-</div>
+
+  <div id="desktop-bg"></div>
+
+  <main id="app">
+    <section id="game">
+    
+        <div id="stats">
+          <div class="stat" id="educacio">
+            <div class="indicator">●</div>
+            <div class="bar">
+              <div class="fill"></div>
+            </div>
+          </div>
+
+          <div class="stat" id="capacitatsClau">
+            <div class="indicator">●</div>
+            <div class="bar">
+              <div class="fill"></div>
+            </div>
+          </div>
+
+          <div class="stat" id="convivencia">
+            <div class="indicator">●</div>
+            <div class="bar">
+              <div class="fill"></div>
+            </div>
+          </div>
+
+          <div class="stat" id="diners">
+            <div class="indicator">●</div>
+            <div class="bar">
+              <div class="fill"></div>
+            </div>
+          </div>
+        </div>
+
+      <article id="card" style="height: 80px;">
+        <p id="cardText">Cargando...</p>
+      </article>
+      
+      <header id="character" style="height: 400px;">
+        <div id="deckStack">
+          <img src="assets/img/characters/Back_test.png" alt="Stack">
+        </div>
+
+        <div id="cardBehind">
+          <div class="flipper">
+              <div class="face front">
+                <img src="assets/img/characters/Back_test.png" alt="Back">
+              </div>
+              <div class="face back">
+                <img id="nextCharacterImg" src="" alt="Next">
+              </div>
+          </div>
+        </div>
+
+        <div id="aGirar">
+          <div class="card-inner">
+            <div class="card-face card-front">
+              <div id="characterDecision"><p id="textDec"></p></div>
+              <img id="characterImg" src="" alt="">
+            </div>
+          </div>
+        </div>
+
+      </header>
+      <h3 id="characterName">Cargando...</h3>
+
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <script src="./js/testGame.js"></script>
 </body>
 </html>

@@ -6,4 +6,42 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\assets\fonts\OCR A Std Medium.ttf" />
+    <None Include="wwwroot\assets\fonts\OCR A Std.ttf" />
+    <None Include="wwwroot\assets\img\bg_test.png" />
+    <None Include="wwwroot\assets\img\characters\Andrea_test.jpg" />
+    <None Include="wwwroot\assets\img\characters\Back_test.png" />
+    <None Include="wwwroot\assets\img\characters\Coral_test.jpg" />
+    <None Include="wwwroot\assets\img\characters\Eric_test.png" />
+    <None Include="wwwroot\assets\img\characters\Fran_test.png" />
+    <None Include="wwwroot\assets\img\characters\Genis_test.jpg" />
+    <None Include="wwwroot\assets\img\characters\Herrera_test.png" />
+    <None Include="wwwroot\assets\img\characters\Ibiza_test.png" />
+    <None Include="wwwroot\assets\img\characters\Ivan_test.jpg" />
+    <None Include="wwwroot\assets\img\characters\Jesus_test.png" />
+    <None Include="wwwroot\assets\img\characters\Juacky_test.jpg" />
+    <None Include="wwwroot\assets\img\characters\Manel_test.jpg" />
+    <None Include="wwwroot\assets\img\characters\Prados_test.png" />
+    <None Include="wwwroot\assets\img\characters\Test.webp" />
+    <None Include="wwwroot\assets\img\characters\Test2.webp" />
+    <None Include="wwwroot\assets\img\characters\Test_Girl.jpg" />
+    <None Include="wwwroot\assets\img\characters\Vallejo_test.jpg" />
+    <None Include="wwwroot\assets\img\characters\Xavi_test.jpg" />
+    <None Include="wwwroot\assets\img\stats\CapacitatsClau_Test.png" />
+    <None Include="wwwroot\assets\img\stats\Convivencia_Test.png" />
+    <None Include="wwwroot\assets\img\stats\Diners_Test.png" />
+    <None Include="wwwroot\assets\img\stats\Educacio_Test.png" />
+    <None Include="wwwroot\assets\img\stats\old\CapacitatsClau_Test.png" />
+    <None Include="wwwroot\assets\img\stats\old\Convivencia_Test.png" />
+    <None Include="wwwroot\assets\img\stats\old\Diners_Test.png" />
+    <None Include="wwwroot\assets\img\stats\old\Educacio_Test.png" />
+    <None Include="wwwroot\css\style.css" />
+    <None Include="wwwroot\js\testGame.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\css\" />
+  </ItemGroup>
+
 </Project>

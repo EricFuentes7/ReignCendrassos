@@ -1,0 +1,218 @@
+@font-face {
+  font-family: 'OCR-A';
+  src: URL('/assets/fonts/OCR\ A\ Std.ttf') format('truetype');
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: OCR-A, sans-serif;
+  color:#130b00;
+}
+
+body {
+  background: #0e0e0e;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#desktop-bg {
+  position: fixed;
+  inset: 0;
+  background: url(../assets/img/bg_test.png);
+  background-repeat: space;
+  background-size: 100%;
+  z-index: -1;
+}
+
+#app {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#game {
+  width: 100%;
+  height: 100%;
+  max-width: 390px;
+  max-height: 780px;
+  background-color: #bda867;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  #game {
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+}
+
+#character {
+  text-align: center;
+  position:relative;
+}
+#characterDecision{
+  opacity: 0;
+  border-radius: 15px 15px 0px 0px;
+  background-color: rgba(0,0,0,0.5);;
+  margin-left: 16px;
+  width: 90%;
+    touch-action: none;
+  position: absolute;
+  padding: 20px 0px 20px 0px;
+      transition: transform 0.2s ease;
+
+}
+#textDec{
+  color: #f0f0c3 !important; 
+
+}
+
+#aGirar{
+    transition: transform 0.2s ease;
+    touch-action: none;
+    z-index: 1;
+
+
+}
+#character img {
+  flex: 1;
+  margin: 16px;
+  background: #1c1c1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 18px;
+  width: 90%;
+  touch-action: none;
+    pointer-events: none;
+    border-radius: 15px;
+
+}
+
+#card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 18px;
+  margin-top: 30px;
+}
+
+#stats {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  background-color: #241404;
+  height: 90px; 
+}
+
+.stat {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.bar {
+  width: 50px; 
+  height: 50px;
+  background-color: #8B7A4E; 
+  position: relative;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-mode: luminance;
+  -webkit-mask-mode: luminance;
+  mask-source-type: luminance; 
+  -webkit-mask-source-type: luminance;
+}
+
+.fill {
+  width: 100%;
+  height: 50%; 
+  background-color: #F7F4BF; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: height 0.3s ease-out;
+}
+
+/* Contenedor del fondo para efecto 3D */
+#cardBehind {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%; 
+  perspective: 1000px;
+  z-index: 0;
+}
+
+/* El elemento que gira */
+#cardBehind .flipper {
+  position: relative;
+  width: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  
+}
+
+/* Clase para activar el giro */
+#cardBehind.flipped .flipper {
+  transform: rotateY(180deg);
+}
+
+/* Caras de la carta de fondo */
+#cardBehind .face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  backface-visibility: hidden;
+  border-radius: 15px; /* Coincide con tu diseño */
+  overflow: hidden;
+}
+
+#cardBehind .face img {
+  width: 90%;
+  display: block;
+  border-radius: 15px;
+  background: #1c1c1c;
+}
+
+/* La cara de atrás (donde está el nuevo personaje) debe estar girada de inicio */
+#cardBehind .back {
+  transform: rotateY(180deg);
+}
+
+/* Asegurar que la carta principal esté encima */
+#aGirar {
+  position: relative; 
+  z-index: 10;
+  /* El resto de tu estilo se mantiene */
+}
+
+#deckStack {
+  position: absolute;
+  top: 16px;
+  width: 100%; 
+  z-index: 0;
+}
+#deckStack img {
+  width: 90%;
+  display: block;
+  border-radius: 15px;
+  background: #1c1c1c;
+  /* Un pequeño borde o sombra para simular profundidad */
+  box-shadow: 0 0 0 2px #332211; 
+}
+
+#characterName{
+  text-align: center;
+}

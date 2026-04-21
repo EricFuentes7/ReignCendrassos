@@ -15,6 +15,7 @@ public class Cartes : PageModel
     
     public async Task OnGet()
     {
+        /*
         var client = _fabrica.CreateClient();
         var resultat = await client.GetFromJsonAsync<List<Carta>>("http://localhost:5239/inicialitzaCartes");
         if (resultat == null)
@@ -23,5 +24,6 @@ public class Cartes : PageModel
         }
 
         cartes = resultat;
+        */
     }
 }
