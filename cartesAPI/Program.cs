@@ -23,4 +23,7 @@ app.UseSwaggerUI();
 //test
 app.MapGet("/inicialitzaCartes", async (CartasDbContext db) => 
 await db.Cartas.ToListAsync());
+
+app.MapGet("/personatges", async (CartasDbContext db) => 
+    await db.Personatges.ToListAsync());
 app.Run();

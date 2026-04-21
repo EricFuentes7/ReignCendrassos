@@ -6,6 +6,8 @@ using MongoDB.EntityFrameworkCore.Extensions;
 public class CartasDbContext : DbContext
 {
     public DbSet<Carta> Cartas { get; init; }
+    public DbSet<Personatge> Personatges { get; init; }
+    
 
     public CartasDbContext(DbContextOptions<CartasDbContext> options)
         : base(options)
@@ -17,7 +19,8 @@ public class CartasDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     
         modelBuilder.Entity<Carta>().ToCollection("cartas");
-
+        modelBuilder.Entity<Personatge>().ToCollection("personatges");
+        
         modelBuilder.Entity<Carta>()
             .Property(c => c.InternalId)
             .HasElementName("_id");

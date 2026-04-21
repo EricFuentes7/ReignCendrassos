@@ -1,0 +1,14 @@
+docker run -d --name mymongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=reigns_data -e MONGO_INITDB_ROOT_PASSWORD="reigns_2026_f1n4lcurs0Er!" mongo
+
+
+docker cp cartes.json mymongo:cartas.json
+docker cp personatges.json mymongo:personatges.json
+
+
+docker exec -it mymongo mongoimport --uri='mongodb://reigns_data:reigns_2026_f1n4lcurs0Er!@localhost:27017/' --db reigns_db --collection cartas --file cartas.json --jsonArray --authenticationDatabase admin
+
+docker exec -it mymongo mongoimport --uri='mongodb://reigns_data:reigns_2026_f1n4lcurs0Er!@localhost:27017/' --db reigns_db --collection personatges --file personatges.json --jsonArray --authenticationDatabase admin
+
+
+docker exec -it mymongo mongosh -u reigns_data -p "reigns_2026_f1n4lcurs0Er!" --authenticationDatabase admin
+
