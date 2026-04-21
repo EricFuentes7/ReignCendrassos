@@ -1,0 +1,22 @@
+﻿@page
+@model cartesWEB.Pages.Cartes
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div>
+    @foreach (var c in Model.cartes)
+    {
+        <p>@c.CartaId és @c.Character con texto @c.Text</p>
+    }
+</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "character": "XaviSala",
+    "text": "Mucha madrileña en madrid",
+    "isRepeatable": true,
+    "requiresCardId": null,
+    "left": {
+      "label": "madrid",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": 10,
+        "diners": 10,
+        "capacitatsClau": 19
+      }
+    },
+    "right": {
+      "label": "paris",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -10,
+        "convivencia": -10,
+        "diners": -10,
+        "capacitatsClau": -10
+      }
+    }
+  }
+]
