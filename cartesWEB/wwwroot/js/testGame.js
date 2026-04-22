@@ -96,7 +96,7 @@ async function inicializarJuego() {
     try {
         const [cartasRes, personajesRes] = await Promise.all([
             fetch('https://reigns-api.onrender.com/cartes'),
-            fetch('https://reigns-api.onrender.com//persones')
+            fetch('https://reigns-api.onrender.com/persones')
         ]);
 
         todasLasCartas = await cartasRes.json();
