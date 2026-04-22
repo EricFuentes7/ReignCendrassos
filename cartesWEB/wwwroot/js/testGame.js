@@ -9,6 +9,37 @@ const textoCambiar = divDecision.querySelector('p');
 const flipperElement = document.querySelector('.flipper');
 const hammer = new Hammer(aGirar);
 
+// --- VOLUM (0.0 a 1.0) ---
+const VOLUM_MUSICA = 1;
+const VOLUM_SWIPE  = 0.3;
+const VOLUM_SELECT = 0.3;
+
+// --- AUDIO ---
+const bgMusic = new Audio('/assets/audio/bgmusic.mp3');
+bgMusic.loop = true;
+bgMusic.volume = VOLUM_MUSICA;
+
+const swipeSound = new Audio('/assets/audio/swipe.mp3');
+swipeSound.volume = VOLUM_SWIPE;
+
+const selectSound = new Audio('/assets/audio/select.mp3');
+selectSound.volume = VOLUM_SELECT;
+
+let lastDeltaSign = 0;
+let semanes = 0;
+
+
+
+function playSound(audio) {
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+}
+
+// Iniciar música de fondo al primer toque del usuario
+document.addEventListener('pointerdown', () => {
+    if (bgMusic.paused) bgMusic.play().catch(() => {});
+}, { once: true });
+
 let todasLasCartas = [];
 let todosLosPersonajes = [];
 let cartasJugadas = new Set(); // Para guardar los IDs de las cartas ya jugadas
@@ -23,6 +54,12 @@ let stats = {
     convivencia: 50,
     diners: 50
 };
+
+// --- NUEVO: BANDERAS ACTIVAS AL INICIAR ---
+let banderasActivas = new Set([
+    "xavi_activo",
+    "rosa_activa"
+]);
 
 // --- STATS LOGIC ---
 function updateStats() {
@@ -70,26 +107,41 @@ async function inicializarJuego() {
 }
 
 // --- GAME LOGIC (CARDS & RULES) ---
+// --- NUEVO: OBTENER CARTA CON FILTRO DE BANDERAS Y SALVAVIDAS ---
 function obtenerCartaAleatoria() {
     const cartasValidas = todasLasCartas.filter(carta => {
-        // 1. Si no es repetible y ya está en el Set de jugadas, la descartamos
-        if (!carta.isRepeatable && cartasJugadas.has(carta.id)) {
+        // 1. Reglas básicas originales
+        if (!carta.isRepeatable && cartasJugadas.has(carta.id)) return false;
+        if (carta.requiresCardId !== null && carta.requiresCardId !== "" && !cartasJugadas.has(carta.requiresCardId)) return false;
+        if (cartaActualObj && carta.id === cartaActualObj.id) return false;
+
+        // 2. Motor de Banderas estricto del JSON
+        if (carta.requiresFlag && !banderasActivas.has(carta.requiresFlag)) {
             return false;
         }
-        // 2. Si requiere un ID específico, verificamos que ese ID ya se haya jugado
-        if (carta.requiresCardId !== null && !cartasJugadas.has(carta.requiresCardId)) {
-            return false;
-        }
-        // 3. Evitamos que salga exactamente la misma carta dos veces seguidas por azar
-        if (cartaActualObj && carta.id === cartaActualObj.id) {
-            return false;
-        }
+
+        // --- 3. FILTROS SALVAVIDAS ESTRICTOS (¡Aquí está la magia!) ---
+        
+        // Xavi solo sale si está activo (o si es su carta de retorno que tiene requiresFlag)
+        if (carta.character === "XaviSala" && !banderasActivas.has("xavi_activo") && !carta.requiresFlag) return false;
+
+        // Rosa solo sale si está activa (o si es su carta de llamada desde el retiro)
+        if (carta.character === "RosaCavalle" && !banderasActivas.has("rosa_activa") && !carta.requiresFlag) return false;
+
+        // Coral solo sale si está activa
+        if (carta.character === "CoralPlanaguma" && !banderasActivas.has("coral_activa") && !carta.requiresFlag) return false;
+
+        // Novedad: Si Coral ya se ha despedido (activó xavi_vuelve), la bloqueamos para que no repita
+        if (carta.character === "CoralPlanaguma" && banderasActivas.has("xavi_vuelve")) return false;
+
+        // Novedad: Andrea (TODA Andrea) solo sale si es la substituta oficial
+        if (carta.character === "AndreaAndaluz" && !banderasActivas.has("andrea_substituta") && !carta.requiresFlag) return false;
+
         return true;
     });
 
     if (cartasValidas.length === 0) {
-        console.warn("¡No quedan cartas válidas en el mazo!");
-        // Aquí podrías manejar un final de juego o reiniciar las repetibles
+        console.warn("¡No quedan cartas válidas en el mazo! Reiniciando ciclo...");
         return todasLasCartas[0];
     }
 
@@ -97,22 +149,16 @@ function obtenerCartaAleatoria() {
     return cartasValidas[indiceRandom];
 }
 
+// --- NUEVO: PREPARAR SIGUIENTE CARTA ARREGLADA ---
 function prepararSiguienteCarta(esInicio = false) {
     if (esInicio) {
         cartaActualObj = obtenerCartaAleatoria();
         proximaCartaObj = obtenerCartaAleatoria();
     } else {
-        // La que estaba detrás pasa a ser la actual
+        // Como la carta forzada ya se metió en la recámara durante el swipe,
+        // simplemente la pasamos al frente y generamos una nueva detrás.
         cartaActualObj = proximaCartaObj;
-
-        // Decidir cuál será la NUEVA que se pone detrás
-        if (idProximaCartaForzada !== null) {
-            // Si la carta anterior dictó cuál es la siguiente por narices
-            proximaCartaObj = todasLasCartas.find(c => c.id === idProximaCartaForzada) || obtenerCartaAleatoria();
-            idProximaCartaForzada = null; // Reseteamos
-        } else {
-            proximaCartaObj = obtenerCartaAleatoria();
-        }
+        proximaCartaObj = obtenerCartaAleatoria();
     }
 }
 
@@ -144,10 +190,22 @@ function resetIndicators() {
 // --- HAMMER SWIPE LOGIC ---
 hammer.get('pan').set({ direction: Hammer.DIRECTION_HORIZONTAL });
 
+hammer.on('panstart', () => {
+    playSound(selectSound);
+    lastDeltaSign = 0;
+});
+
 hammer.on('panmove', (e) => {
     const rotation = Math.max(-20, Math.min(20, e.deltaX / 10));
     const translate = Math.max(-150, Math.min(150, e.deltaX));
     aGirar.style.transform = `rotate(${rotation}deg) translateX(${translate}px)`;
+
+    // Sonido al cruzar el ángulo 0
+    const currentSign = e.deltaX > 0 ? 1 : e.deltaX < 0 ? -1 : 0;
+    if (currentSign !== 0 && lastDeltaSign !== 0 && currentSign !== lastDeltaSign) {
+        playSound(selectSound);
+    }
+    if (currentSign !== 0) lastDeltaSign = currentSign;
 
     const opacity = Math.min(Math.abs(translate) / 100, 1);
     const side = e.deltaX > 0 ? 'right' : 'left';
@@ -179,6 +237,7 @@ hammer.on('panend', (e) => {
     const translate = e.deltaX;
     const threshold = 80;
     resetIndicators();
+    lastDeltaSign = 0;
 
     if (translate >= threshold || translate <= -threshold){
         const isRight = translate >= threshold;
@@ -186,10 +245,20 @@ hammer.on('panend', (e) => {
         const accionTomada = cartaActualObj[decision];
         const efectos = accionTomada.effects;
 
-        // 1. Aplicar stats
+        // 1. Aplicar stats y añadir clases de color
         for (const stat in efectos) {
             if (stats.hasOwnProperty(stat)) {
-                stats[stat] += efectos[stat];
+                const valorEfecto = efectos[stat];
+                const statDiv = document.getElementById(stat);
+
+                // --- NUEVO: Feedback visual de color ---
+                if (statDiv && valorEfecto !== 0) {
+                    const claseColor = valorEfecto > 0 ? 'subiendo' : 'bajando';
+                    statDiv.classList.add(claseColor);
+                }
+                // ---------------------------------------
+
+                stats[stat] += valorEfecto;
                 stats[stat] = Math.max(0, Math.min(100, stats[stat]));
             }
         }
@@ -198,12 +267,25 @@ hammer.on('panend', (e) => {
         // 2. Registrar carta como jugada
         cartasJugadas.add(cartaActualObj.id);
 
-        // 3. Revisar si hay nextCardId (carta forzada para la próxima ronda)
-        if (accionTomada.nextCardId !== null) {
-            idProximaCartaForzada = accionTomada.nextCardId;
+        // --- NUEVO: ACTUALIZAR BANDERAS ---
+        if (accionTomada.setFlag) banderasActivas.add(accionTomada.setFlag);
+        if (accionTomada.removeFlag) banderasActivas.delete(accionTomada.removeFlag);
+
+        // --- NUEVO: ARREGLO DEL DELAY DEL NEXTCARDID ---
+        if (accionTomada.nextCardId !== null && accionTomada.nextCardId !== "") {
+            proximaCartaObj = todasLasCartas.find(c => c.id === accionTomada.nextCardId) || obtenerCartaAleatoria();
+            const personajeProximo = getPersonaje(proximaCartaObj.character);
+            nextCharacterImg.src = personajeProximo.image; 
         }
 
-        // 4. Animar la salida
+        // 4. Sonido swipe
+        playSound(swipeSound);
+
+        // Sumar semana
+        semanes++;
+        document.getElementById('semanes-text').textContent = `${semanes} setmanes al poder`;
+
+        // 5. Animar la salida
         const endX = isRight ? 350 : -350;
         const endRot = isRight ? 20 : -20;
         aGirar.style.transition = 'transform 0.4s ease-out';
@@ -211,7 +293,6 @@ hammer.on('panend', (e) => {
 
         ejecutarAnimacionCambio();
     } else {
-        // Soltó antes del threshold, vuelve al centro
         aGirar.style.transition = 'transform 0.3s ease-out';
         aGirar.style.transform = `rotate(0deg) translateX(0px)`;
         divDecision.style.opacity = `0`;
@@ -228,6 +309,12 @@ function ejecutarAnimacionCambio() {
         // Preparamos los datos de la siguiente ronda
         prepararSiguienteCarta();
         renderJuego();
+
+        // --- NUEVO: Limpiar colores de stats ---
+        document.querySelectorAll('.stat').forEach(statDiv => {
+            statDiv.classList.remove('subiendo', 'bajando');
+        });
+        // ---------------------------------------
 
         aGirar.style.transition = 'none';
         flipperElement.style.transition = 'none';

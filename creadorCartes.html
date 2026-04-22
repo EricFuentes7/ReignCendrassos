@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Cartes - Minimalist</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #1f2937;
+            overflow: hidden; /* Prevent full body scroll, we'll scroll sections */
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0.8rem 2rem;
+        }
+        .navbar-brand { font-weight: 600; color: #111827; }
+        
+        /* --- LAYOUT --- */
+        .app-container { display: flex; height: calc(100vh - 65px); }
+        
+        .sidebar {
+            width: 320px;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-header { padding: 20px; border-bottom: 1px solid #f3f4f6; }
+        .card-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .main-editor {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 40px;
+            background-color: #f9fafb;
+        }
+        .editor-content { max-width: 900px; margin: 0 auto; }
+
+        /* --- SIDEBAR ITEMS --- */
+        .card-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+            color: #4b5563;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+        }
+        .card-item:hover { background-color: #f3f4f6; }
+        .card-item.active {
+            background-color: #eff6ff;
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .card-id-badge {
+            background-color: #e5e7eb;
+            color: #4b5563;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-weight: 600;
+        }
+        .card-item.active .card-id-badge { background-color: #bfdbfe; color: #1d4ed8; }
+
+        /* --- FORM ELEMENTS --- */
+        .form-label {
+            font-weight: 500;
+            color: #6b7280;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            padding: 0.6rem 1rem;
+            font-size: 0.95rem;
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111827;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        /* --- OPTION PANELS --- */
+        .option-panel {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .panel-left { border-top: 4px solid #8b5cf6; }
+        .panel-right { border-top: 4px solid #10b981; }
+        
+        .option-header { font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+        
+        /* --- BUTTONS --- */
+        .btn-custom { border-radius: 8px; font-weight: 500; padding: 0.5rem 1rem; transition: all 0.2s; }
+        .btn-primary-custom { background-color: #111827; color: white; border: none; }
+        .btn-primary-custom:hover { background-color: #374151; color: white; }
+        .btn-outline-custom { background-color: white; border: 1px solid #d1d5db; color: #374151; }
+        .btn-outline-custom:hover { background-color: #f3f4f6; }
+        .btn-danger-custom { color: #dc2626; background: transparent; border: 1px solid transparent; }
+        .btn-danger-custom:hover { background: #fef2f2; border-color: #fecaca; }
+
+        /* --- STATS GRID --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px dashed #d1d5db;
+        }
+
+        /* Smooth reveal */
+        #editorForm { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar d-flex justify-content-between align-items-center">
+    <div class="navbar-brand">✨ Editor Reigns</div>
+    <div class="d-flex gap-3 align-items-center">
+        <input type="file" id="fileInput" class="form-control form-control-sm" accept=".json" style="max-width: 250px;">
+        <button class="btn btn-custom btn-primary-custom" onclick="downloadJSON()">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="me-1"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            Exportar JSON
+        </button>
+    </div>
+</nav>
+
+<div class="app-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <button class="btn btn-custom btn-outline-custom w-100" onclick="createNewCard()">
+                + Crear Nova Carta
+            </button>
+        </div>
+        <div class="card-list" id="cardList">
+            <div class="text-center text-muted mt-5 p-3" style="font-size: 0.9rem;">
+                Carrega un arxiu JSON per començar o crea una carta nova.
+            </div>
+        </div>
+    </div>
+
+    <div class="main-editor">
+        <div class="editor-content" id="editorForm" style="display: none;">
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 id="formTitle" style="font-weight: 600; color: #111827; margin: 0;">Configuració de la Carta</h2>
+                <div>
+                    <button type="button" class="btn btn-custom btn-danger-custom me-2" onclick="deleteCurrentCard()">Eliminar</button>
+                    <button type="button" class="btn btn-custom btn-primary-custom" onclick="saveCard()">Desar Canvis</button>
+                </div>
+            </div>
+
+            <form id="cardForm">
+                <div class="section-title mt-0">Dades de la Carta</div>
+                <div class="row g-4">
+                    <div class="col-md-2">
+                        <label class="form-label">ID</label>
+                        <input type="number" class="form-control" id="c_id" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Personatge</label>
+                        <input type="text" class="form-control" id="c_character" placeholder="Ej: RosaCavalle" required>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end pb-2">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="c_isRepeatable" style="cursor: pointer;">
+                            <label class="form-check-label text-muted ms-2" for="c_isRepeatable">Carta repetible (Torna a sortir al mazo)</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Text de la carta</label>
+                        <textarea class="form-control" id="c_text" rows="2" placeholder="Què diu el personatge?" required></textarea>
+                    </div>
+                </div>
+
+                <div class="section-title">Condicions d'Aparició</div>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Requereix Carta ID prèvia</label>
+                        <input type="number" class="form-control" id="c_requiresCardId" placeholder="Buit si no en cal">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Requereix Bandera (Flag) Activa</label>
+                        <input type="text" class="form-control" id="c_requiresFlag" placeholder="Ej: andrea_substituta">
+                    </div>
+                </div>
+
+                <div class="section-title">Opcions de Resposta</div>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="option-panel panel-left">
+                            <div class="option-header" style="color: #6d28d9;">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                                Lliscar a l'Esquerra
+                            </div>
+                            
+                            <label class="form-label">Text Resposta</label>
+                            <input type="text" class="form-control mb-3" id="l_label" required>
+                            
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label text-success">Activar Flag</label>
+                                    <input type="text" class="form-control form-control-sm" id="l_setFlag" placeholder="+ Flag">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label text-danger">Desactivar Flag</label>
+                                    <input type="text" class="form-control form-control-sm" id="l_removeFlag" placeholder="- Flag">
+                                </div>
+                            </div>
+
+                            <label class="form-label">Forçar Següent Carta ID</label>
+                            <input type="number" class="form-control mb-4" id="l_nextCardId" placeholder="Opcional">
+
+                            <label class="form-label">Efectes (Stats)</label>
+                            <div class="stats-grid">
+                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Educació</label><input type="number" class="form-control form-control-sm text-center" id="l_educacio"></div>
+                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Capacitats</label><input type="number" class="form-control form-control-sm text-center" id="l_capacitats"></div>
+                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Convivència</label><input type="number" class="form-control form-control-sm text-center" id="l_convivencia"></div>
+                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Diners</label><input type="number" class="form-control form-control-sm text-center" id="l_diners"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="option-panel panel-right">
+                            <div class="option-header" style="color: #047857;">
+                                Lliscar a la Dreta
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
+                            
+                            <label class="form-label">Text Resposta</label>
+                            <input type="text" class="form-control mb-3" id="r_label" required>
+                            
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label text-success">Activar Flag</label>
+                                    <input type="text" class="form-control form-control-sm" id="r_setFlag" placeholder="+ Flag">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label text-danger">Desactivar Flag</label>
+                                    <input type="text" class="form-control form-control-sm" id="r_removeFlag" placeholder="- Flag">
+                                </div>
+                            </div>
+
+                            <label class="form-label">Forçar Següent Carta ID</label>
+                            <input type="number" class="form-control mb-4" id="r_nextCardId" placeholder="Opcional">
+
+                            <label class="form-label">Efectes (Stats)</label>
+                            <div class="stats-grid">
+                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Educació</label><input type="number" class="form-control form-control-sm text-center" id="r_educacio"></div>
+                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Capacitats</label><input type="number" class="form-control form-control-sm text-center" id="r_capacitats"></div>
+                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Convivència</label><input type="number" class="form-control form-control-sm text-center" id="r_convivencia"></div>
+                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Diners</label><input type="number" class="form-control form-control-sm text-center" id="r_diners"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br><br> </div>
+    </div>
+</div>
+
+<script>
+    let dbCartas = [];
+    let cartaActualIndex = -1;
+
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                dbCartas = JSON.parse(e.target.result);
+                renderLlista();
+            } catch (err) {
+                alert("Error al llegir el JSON.");
+            }
+        };
+        reader.readAsText(file);
+    });
+
+    function renderLlista() {
+        const llista = document.getElementById('cardList');
+        llista.innerHTML = '';
+        
+        dbCartas.sort((a, b) => a.id - b.id);
+
+        dbCartas.forEach((carta, index) => {
+            const div = document.createElement('div');
+            div.className = `card-item ${index === cartaActualIndex ? 'active' : ''}`;
+            div.innerHTML = `<span class="card-id-badge">${carta.id}</span> <span>${carta.character}</span>`;
+            div.onclick = () => loadCardIntoForm(index);
+            llista.appendChild(div);
+        });
+    }
+
+    function loadCardIntoForm(index) {
+        cartaActualIndex = index;
+        const c = dbCartas[index];
+        
+        document.getElementById('editorForm').style.display = 'block';
+
+        const val = (v) => v !== null && v !== undefined ? v : '';
+
+        // Basico
+        document.getElementById('c_id').value = c.id;
+        document.getElementById('c_character').value = c.character;
+        document.getElementById('c_text').value = c.text;
+        document.getElementById('c_isRepeatable').checked = c.isRepeatable;
+        document.getElementById('c_requiresCardId').value = val(c.requiresCardId);
+        document.getElementById('c_requiresFlag').value = val(c.requiresFlag);
+
+        // Izquierda
+        document.getElementById('l_label').value = c.left.label;
+        document.getElementById('l_setFlag').value = val(c.left.setFlag);
+        document.getElementById('l_removeFlag').value = val(c.left.removeFlag);
+        document.getElementById('l_nextCardId').value = val(c.left.nextCardId);
+        document.getElementById('l_educacio').value = c.left.effects.educacio;
+        document.getElementById('l_capacitats').value = c.left.effects.capacitatsClau;
+        document.getElementById('l_convivencia').value = c.left.effects.convivencia;
+        document.getElementById('l_diners').value = c.left.effects.diners;
+
+        // Derecha
+        document.getElementById('r_label').value = c.right.label;
+        document.getElementById('r_setFlag').value = val(c.right.setFlag);
+        document.getElementById('r_removeFlag').value = val(c.right.removeFlag);
+        document.getElementById('r_nextCardId').value = val(c.right.nextCardId);
+        document.getElementById('r_educacio').value = c.right.effects.educacio;
+        document.getElementById('r_capacitats').value = c.right.effects.capacitatsClau;
+        document.getElementById('r_convivencia').value = c.right.effects.convivencia;
+        document.getElementById('r_diners').value = c.right.effects.diners;
+
+        renderLlista(); 
+    }
+
+    function createNewCard() {
+        const nouId = dbCartas.length > 0 ? Math.max(...dbCartas.map(c => c.id)) + 1 : 1;
+        
+        const novaCarta = {
+            id: nouId, character: "NouPersonatge", text: "", isRepeatable: true,
+            requiresCardId: null, requiresFlag: null,
+            left: { label: "", nextCardId: null, setFlag: null, removeFlag: null, effects: { educacio: 0, convivencia: 0, diners: 0, capacitatsClau: 0 } },
+            right: { label: "", nextCardId: null, setFlag: null, removeFlag: null, effects: { educacio: 0, convivencia: 0, diners: 0, capacitatsClau: 0 } }
+        };
+
+        dbCartas.push(novaCarta);
+        loadCardIntoForm(dbCartas.length - 1);
+        
+        // Scroll list to bottom
+        setTimeout(() => {
+            const list = document.getElementById('cardList');
+            list.scrollTop = list.scrollHeight;
+        }, 50);
+    }
+
+    function saveCard() {
+        if (cartaActualIndex === -1) return;
+
+        const getStr = (id) => { const v = document.getElementById(id).value.trim(); return v === '' ? null : v; };
+        const getInt = (id) => { const v = document.getElementById(id).value; return v === '' ? null : parseInt(v); };
+        const getEffect = (id) => { const v = document.getElementById(id).value; return v === '' ? 0 : parseInt(v); };
+
+        dbCartas[cartaActualIndex] = {
+            id: parseInt(document.getElementById('c_id').value),
+            character: document.getElementById('c_character').value,
+            text: document.getElementById('c_text').value,
+            isRepeatable: document.getElementById('c_isRepeatable').checked,
+            requiresCardId: getInt('c_requiresCardId'),
+            requiresFlag: getStr('c_requiresFlag'),
+            left: {
+                label: document.getElementById('l_label').value, nextCardId: getInt('l_nextCardId'), setFlag: getStr('l_setFlag'), removeFlag: getStr('l_removeFlag'),
+                effects: { educacio: getEffect('l_educacio'), convivencia: getEffect('l_convivencia'), diners: getEffect('l_diners'), capacitatsClau: getEffect('l_capacitats') }
+            },
+            right: {
+                label: document.getElementById('r_label').value, nextCardId: getInt('r_nextCardId'), setFlag: getStr('r_setFlag'), removeFlag: getStr('r_removeFlag'),
+                effects: { educacio: getEffect('r_educacio'), convivencia: getEffect('r_convivencia'), diners: getEffect('r_diners'), capacitatsClau: getEffect('r_capacitats') }
+            }
+        };
+
+        renderLlista();
+        
+        const btn = document.querySelector('.btn-primary-custom');
+        const textOriginal = btn.innerHTML;
+        btn.innerHTML = "✅ Desat!";
+        setTimeout(() => btn.innerHTML = textOriginal, 1000);
+    }
+
+    function deleteCurrentCard() {
+        if (cartaActualIndex === -1) return;
+        if (confirm("Segur que vols eliminar aquesta carta?")) {
+            dbCartas.splice(cartaActualIndex, 1);
+            cartaActualIndex = -1;
+            document.getElementById('editorForm').style.display = 'none';
+            renderLlista();
+        }
+    }
+
+    function downloadJSON() {
+        if (dbCartas.length === 0) return alert("No hi ha dades per exportar.");
+        
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbCartas, null, 2));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "cartes.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+</script>
+</body>
+</html>

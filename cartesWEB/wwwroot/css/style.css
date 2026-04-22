@@ -107,7 +107,7 @@ body {
   justify-content: space-between;
   padding: 16px;
   background-color: #241404;
-  height: 90px; 
+  height: 110px; 
 }
 
 .stat {
@@ -215,4 +215,44 @@ body {
 
 #characterName{
   text-align: center;
+}
+
+/* --- EFECTOS DE FEEDBACK DE STATS --- */
+
+/* Cuando la estadística sube (Verde) */
+.stat.subiendo .fill {
+  background-color: #2ecc71 !important;
+}
+
+/* Cuando la estadística baja (Rojo) */
+.stat.bajando .fill {
+  background-color: #e74c3c !important;
+}
+
+/* Transición suave para el cambio de color */
+.fill {
+  transition: height 0.3s ease-out, background-color 0.3s ease;
+}
+
+#bottom-bar {
+  background-color: #241404;
+  padding: 0 16px;
+  height: 110px;
+  display: flex;
+  align-items: left;
+  justify-content: center;
+  flex-direction: column;
+  flex-shrink: 0;
+
+  /* Esto empuja la barra al final del contenedor flex (#game) */
+  margin-top: auto; 
+}
+#bottom-bar p{
+  color: #F7F4BF;
+  font-size: 16px;
+}
+#semanes-text {
+  font-size: 13px;
+  color: #8B7A4E;
+  letter-spacing: 0.05em;
 }
