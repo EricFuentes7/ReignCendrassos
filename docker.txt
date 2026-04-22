@@ -4,7 +4,6 @@ docker run -d --name mymongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=reigns
 docker cp cartes.json mymongo:cartas.json
 docker cp personatges.json mymongo:personatges.json
 
-
 docker exec -it mymongo mongoimport --uri='mongodb://reigns_data:reigns_2026_f1n4lcurs0Er!@localhost:27017/' --db reigns_db --collection cartas --file cartas.json --jsonArray --authenticationDatabase admin
 
 docker exec -it mymongo mongoimport --uri='mongodb://reigns_data:reigns_2026_f1n4lcurs0Er!@localhost:27017/' --db reigns_db --collection personatges --file personatges.json --jsonArray --authenticationDatabase admin
@@ -12,3 +11,34 @@ docker exec -it mymongo mongoimport --uri='mongodb://reigns_data:reigns_2026_f1n
 
 docker exec -it mymongo mongosh -u reigns_data -p "reigns_2026_f1n4lcurs0Er!" --authenticationDatabase admin
 
+
+
+
+---
+
+
+docker run -d --name mymongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=reigns_data -e MONGO_INITDB_ROOT_PASSWORD="reigns_2026_f1n4lcurs0Er!" mongo
+
+
+docker cp personatges.json mymongo:personatges.json
+
+docker cp cartes_test.json mymongo:cartas.json
+docker exec -it mymongo mongoimport --uri='mongodb://reigns_data:reigns_2026_f1n4lcurs0Er!@localhost:27017/' --db reigns_db --collection cartas --file cartas.json --jsonArray --authenticationDatabase admin
+
+docker exec -it mymongo mongoimport --uri='mongodb://reigns_data:reigns_2026_f1n4lcurs0Er!@localhost:27017/' --db reigns_db --collection personatges --file personatges.json --jsonArray --authenticationDatabase admin
+
+
+docker exec -it mymongo mongosh -u reigns_data -p "reigns_2026_f1n4lcurs0Er!" --authenticationDatabase admin
+
+
+
+
+--
+
+"C:\Program Files\MongoDB\Tools\100\bin\mongoimport.exe" --uri="mongodb+srv://reigns_data:reigns_2026_f1n4lcurs0Er!@cluster0.k2pqm1m.mongodb.net/reigns_db?appName=Cluster0" --collection cartas --file cartes_test.json --jsonArray
+"C:\Program Files\MongoDB\Tools\100\bin\mongoimport.exe" --uri="mongodb+srv://reigns_data:reigns_2026_f1n4lcurs0Er!@cluster0.k2pqm1m.mongodb.net/reigns_db?appName=Cluster0" --collection personatges --file personatges.json --jsonArray
+
+ó
+
+mongoimport --uri="mongodb+srv://reigns_data:reigns_2026_f1n4lcurs0Er!@cluster0.k2pqm1m.mongodb.net/reigns_db?appName=Cluster0" --collection cartas --file cartes_test.json --jsonArray
+mongoimport --uri="mongodb+srv://reigns_data:reigns_2026_f1n4lcurs0Er!@cluster0.k2pqm1m.mongodb.net/reigns_db?appName=Cluster0" --collection personatges --file personatges.json --jsonArray

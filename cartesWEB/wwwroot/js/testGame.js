@@ -25,6 +25,10 @@ swipeSound.volume = VOLUM_SWIPE;
 const selectSound = new Audio('/assets/audio/select.mp3');
 selectSound.volume = VOLUM_SELECT;
 
+// --- AUDIO AÑADIDO: CUERVO ---
+const cuervoSound = new Audio('/assets/audio/cuervo.mp3');
+cuervoSound.volume = 1.0;
+
 let lastDeltaSign = 0;
 let semanes = 0;
 
@@ -169,15 +173,28 @@ function getPersonaje(key) {
 function renderJuego() {
     if (!cartaActualObj || !proximaCartaObj) return;
 
-    // Actual
-    const personajeActual = getPersonaje(cartaActualObj.character);
-    textCard.textContent = cartaActualObj.text;
-    imatgePersonatge.src = personajeActual.image;
-    nomPersonatge.textContent = personajeActual.name;
+    // --- MODIFICADO: LÓGICA DE RENDERIZADO PARA MOSTRAR LA IMAGEN Y NOMBRE DE LA MUERTE ---
+    if (cartaActualObj.id === "carta_muerte") {
+        textCard.textContent = cartaActualObj.text;
+        nomPersonatge.textContent = cartaActualObj.customName;
+        imatgePersonatge.src = cartaActualObj.customImg;
+        
+        imatgePersonatge.style.display = ""; 
+        nextCharacterImg.style.display = "none"; // Atrás no mostramos a nadie porque se reinicia
+    } else {
+        imatgePersonatge.style.display = "";
+        nextCharacterImg.style.display = "";
+        
+        const personajeActual = getPersonaje(cartaActualObj.character);
+        textCard.textContent = cartaActualObj.text;
+        imatgePersonatge.src = personajeActual.image;
+        nomPersonatge.textContent = personajeActual.name;
+    }
 
-    // Próxima (la que se asoma por detrás)
-    const personajeProximo = getPersonaje(proximaCartaObj.character);
-    nextCharacterImg.src = personajeProximo.image;
+    if (proximaCartaObj.id !== "carta_muerte" && cartaActualObj.id !== "carta_muerte") {
+        const personajeProximo = getPersonaje(proximaCartaObj.character);
+        nextCharacterImg.src = personajeProximo.image;
+    }
 }
 
 function resetIndicators() {
@@ -220,7 +237,7 @@ hammer.on('panmove', (e) => {
             const statId = statDiv.id;
             const dot = statDiv.querySelector('.indicator');
 
-            if (efectos[statId] !== undefined && Math.abs(translate) > 25) {
+            if (efectos && efectos[statId] !== undefined && Math.abs(translate) > 25) {
                 const magnitude = Math.abs(efectos[statId]);
                 const scaleValue = magnitude > 10 ? 1.4 : 0.8;
                 dot.style.opacity = opacity;
@@ -240,6 +257,17 @@ hammer.on('panend', (e) => {
     lastDeltaSign = 0;
 
     if (translate >= threshold || translate <= -threshold){
+        
+        // --- AÑADIDO: SI DESLIZAMOS LA CARTA DE MUERTE, CORTAMOS LA EJECUCIÓN Y REINICIAMOS ---
+        if (cartaActualObj && cartaActualObj.id === "carta_muerte") {
+            const endX = translate >= threshold ? 350 : -350;
+            const endRot = translate >= threshold ? 20 : -20;
+            aGirar.style.transition = 'transform 0.4s ease-out';
+            aGirar.style.transform = `translateY(600px) translateX(${endX}px) rotate(${endRot}deg)`;
+            reiniciarJuegoConFundido();
+            return; 
+        }
+
         const isRight = translate >= threshold;
         const decision = isRight ? 'right' : 'left';
         const accionTomada = cartaActualObj[decision];
@@ -264,26 +292,61 @@ hammer.on('panend', (e) => {
         }
         updateStats();
 
+        // --- AÑADIDO: COMPROBAR SI HAS MUERTO DESPUÉS DE APLICAR STATS ---
+        let hasMuerto = false;
+        let textoMuerte = "";
+        let imgMuerte = "";
+        let nomMuerte = "";
+        
+        for (const stat in stats) {
+            if (stats[stat] <= 0) {
+                hasMuerto = true;
+                textoMuerte = `Has fracassat. La teva capacitat de ${stat} ha arribat a 0.`;
+                imgMuerte = `/assets/img/deaths/muerte_${stat}_0.png`; // <--- Ajusta la ruta y extensión aquí
+                nomMuerte = `Mort per manca de ${stat}`;
+                break;
+            } else if (stats[stat] >= 100) {
+                hasMuerto = true;
+                textoMuerte = `Has fracassat. La teva capacitat de ${stat} ha arribat a 100.`;
+                imgMuerte = `/assets/img/deaths/muerte_${stat}_100.png`; // <--- Ajusta la ruta y extensión aquí
+                nomMuerte = `Mort per excés de ${stat}`;
+                break;
+            }
+        }
+
+        if (hasMuerto) {
+            // Inyectamos la carta de muerte para la siguiente ronda creada "al vuelo"
+            proximaCartaObj = {
+                id: "carta_muerte",
+                text: textoMuerte,
+                customImg: imgMuerte,
+                customName: nomMuerte,
+                character: "none",
+                left: { label: "Fi", effects: {} },
+                right: { label: "Fi", effects: {} }
+            };
+        } else {
+            // --- NUEVO: ACTUALIZAR BANDERAS ---
+            if (accionTomada.setFlag) banderasActivas.add(accionTomada.setFlag);
+            if (accionTomada.removeFlag) banderasActivas.delete(accionTomada.removeFlag);
+
+            // --- NUEVO: ARREGLO DEL DELAY DEL NEXTCARDID ---
+            if (accionTomada.nextCardId !== null && accionTomada.nextCardId !== "") {
+                proximaCartaObj = todasLasCartas.find(c => c.id === accionTomada.nextCardId) || obtenerCartaAleatoria();
+                const personajeProximo = getPersonaje(proximaCartaObj.character);
+                nextCharacterImg.src = personajeProximo.image; 
+            }
+
+            // Sumar semana
+            semanes++;
+            document.getElementById('semanes-text').textContent = `${semanes} setmanes al poder`;
+        }
+
         // 2. Registrar carta como jugada
         cartasJugadas.add(cartaActualObj.id);
 
-        // --- NUEVO: ACTUALIZAR BANDERAS ---
-        if (accionTomada.setFlag) banderasActivas.add(accionTomada.setFlag);
-        if (accionTomada.removeFlag) banderasActivas.delete(accionTomada.removeFlag);
-
-        // --- NUEVO: ARREGLO DEL DELAY DEL NEXTCARDID ---
-        if (accionTomada.nextCardId !== null && accionTomada.nextCardId !== "") {
-            proximaCartaObj = todasLasCartas.find(c => c.id === accionTomada.nextCardId) || obtenerCartaAleatoria();
-            const personajeProximo = getPersonaje(proximaCartaObj.character);
-            nextCharacterImg.src = personajeProximo.image; 
-        }
-
         // 4. Sonido swipe
         playSound(swipeSound);
-
-        // Sumar semana
-        semanes++;
-        document.getElementById('semanes-text').textContent = `${semanes} setmanes al poder`;
 
         // 5. Animar la salida
         const endX = isRight ? 350 : -350;
@@ -328,6 +391,72 @@ function ejecutarAnimacionCambio() {
             aGirar.style.transition = 'transform 0.2s ease';
         }, 50);
     }, 700);
+}
+
+// --- AÑADIDO: FUNCIÓN DE REINICIO CON FUNDIDO Y SONIDO DE CUERVO ---
+function reiniciarJuegoConFundido() {
+    playSound(cuervoSound);
+
+    // Crear div negro para el fundido
+    const blackScreen = document.createElement('div');
+    blackScreen.style.position = 'fixed';
+    blackScreen.style.top = '0';
+    blackScreen.style.left = '0';
+    blackScreen.style.width = '100vw';
+    blackScreen.style.height = '100vh';
+    blackScreen.style.backgroundColor = 'black';
+    blackScreen.style.zIndex = '9999';
+    blackScreen.style.opacity = '0';
+    blackScreen.style.transition = 'opacity 1s ease-in-out';
+    blackScreen.style.pointerEvents = 'none'; 
+    document.body.appendChild(blackScreen);
+
+    // Iniciar fundido a negro
+    setTimeout(() => {
+        blackScreen.style.opacity = '1';
+    }, 50);
+
+    // Una vez está todo negro (1s de transición), reiniciamos variables
+    setTimeout(() => {
+        stats = {
+            educacio: 50,
+            capacitatsClau: 50,
+            convivencia: 50,
+            diners: 50
+        };
+        semanes = 0;
+        document.getElementById('semanes-text').textContent = `${semanes} setmanes al poder`;
+        
+        cartasJugadas.clear();
+        banderasActivas = new Set([
+            "xavi_activo",
+            "rosa_activa"
+        ]);
+
+        updateStats();
+        
+        document.querySelectorAll('.stat').forEach(statDiv => {
+            statDiv.classList.remove('subiendo', 'bajando');
+        });
+
+        // Reset de la carta girada para ponerla en su sitio
+        aGirar.style.transition = 'none';
+        aGirar.style.transform = 'translateY(0) translateX(0) rotate(0)';
+        divDecision.style.opacity = '0';
+
+        // Recargar nueva ronda desde cero
+        prepararSiguienteCarta(true);
+        renderJuego();
+
+        // Quitar fundido (Fade in a la nueva partida)
+        blackScreen.style.opacity = '0';
+        
+        // Destruir el div negro para que no estorbe en el DOM
+        setTimeout(() => {
+            blackScreen.remove();
+        }, 1000);
+
+    }, 1000);
 }
 
 // Iniciar
