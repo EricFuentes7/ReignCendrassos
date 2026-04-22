@@ -95,8 +95,8 @@ setStatIcon('diners', 'assets/img/stats/Diners_Test.png');
 async function inicializarJuego() {
     try {
         const [cartasRes, personajesRes] = await Promise.all([
-            fetch('http://localhost:5239/cartes'),
-            fetch('http://localhost:5239/persones')
+            fetch('https://reigns-api.onrender.com/cartes'),
+            fetch('https://reigns-api.onrender.com//persones')
         ]);
 
         todasLasCartas = await cartasRes.json();
