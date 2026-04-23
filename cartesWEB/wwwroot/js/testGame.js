@@ -237,7 +237,8 @@ hammer.on('panmove', (e) => {
             const statId = statDiv.id;
             const dot = statDiv.querySelector('.indicator');
 
-            if (efectos && efectos[statId] !== undefined && Math.abs(translate) > 25) {
+            // AQUÍ ESTÁ EL CAMBIO: Se añadió && efectos[statId] !== 0
+            if (efectos && efectos[statId] !== undefined && efectos[statId] !== 0 && Math.abs(translate) > 25) {
                 const magnitude = Math.abs(efectos[statId]);
                 const scaleValue = magnitude > 10 ? 1.4 : 0.8;
                 dot.style.opacity = opacity;
