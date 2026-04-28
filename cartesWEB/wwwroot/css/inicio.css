@@ -1,0 +1,209 @@
+/* FUENTES */
+@font-face {
+    font-family: 'OCR-A';
+    src: url('/assets/fonts/OCR A Std.ttf') format('truetype');
+}
+
+/* RESET */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'OCR-A', sans-serif;
+}
+
+body {
+    background: #000000; /* Fondo negro base */
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* FONDO ESCRITORIO CON ESTILO DE REFERENCIA */
+#desktop-bg {
+    position: fixed;
+    inset: 0;
+    /* Gradiente radial para simular el cielo oscuro y la silueta inferior de la referencia */
+    background: radial-gradient(circle at 50% 30%, #202d4d 0%, #060912 70%);
+    z-index: -1;
+}
+
+/* CONTENEDOR PRINCIPAL (CENTRA EL MÓVIL) */
+#app {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* EL "MÓVIL" - Contenedor con fondo transparente para mostrar el fondo de escritorio */
+#game {
+    width: 101%;
+    height: 101%;
+    max-width: 392px;
+    max-height: 782px;
+    background-color: transparent; /* Se ha cambiado a transparente para ver el fondo */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+
+/* SECCIÓN CENTRAL */
+#main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centrado vertical */
+    padding: 20px;
+}
+
+.main-img {
+    width: 100%;
+    max-width: 340px;
+    /* border-radius: 15px; */ /* Eliminado el borde redondeado para la imagen de título */
+    margin-bottom: 30px; /* Reducido un poco para acercar los botones */
+}
+
+/* Contenedor para agrupar botones */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaciado entre botones */
+    width: 100%;
+    max-width: 300px; /* Ancho máximo para los botones */
+}
+
+/* Estilos base para botones de acción */
+.action-button {
+    border: none;
+    padding: 15px 20px; /* Ajuste de padding para que parezcan más botones de menú */
+    font-size: 16px; /* Ajuste de fuente */
+    border-radius: 2px; /* Bordes casi cuadrados como en la referencia */
+    cursor: pointer;
+    text-transform: uppercase; /* Texto en mayúsculas */
+    letter-spacing: 0.05em;
+    width: 100%;
+    text-align: center;
+}
+
+/* Botón 'HISTORIA' (Beige claro con texto oscuro) */
+.action-button.primary {
+    background-color: #e2d2ba; /* Color beige claro de la referencia */
+    color: #3b302a; /* Color de texto oscuro */
+    /* Se han eliminado las sombras para un estilo más plano */
+}
+
+.action-button.primary:active {
+    background-color: #d8c4ab; /* Efecto de pulsado */
+}
+
+/* Contenedor para el botón deshabilitado y su etiqueta */
+.disabled-button-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Botón 'MULTIJUGADOR' (Beige oscuro deshabilitado) */
+.action-button.secondary {
+    background-color: #a89a85; /* Color beige más oscuro/grisáceo */
+    color: #6d6457; /* Texto con menos contraste */
+    cursor: not-allowed;
+    position: relative;
+}
+
+/* Etiqueta 'Bloqueado' roja */
+.status-label.locked {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ff3a60; /* Color rosa/rojo de la referencia */
+    color: white;
+    font-size: 10px;
+    text-align: center;
+    padding: 2px 0;
+    text-transform: capitalize; /* Primera letra mayúscula */
+}
+
+
+/* BARRA INFERIOR - Se ha mantenido el estilo original */
+#bottom-bar {
+    background-color: #241404;
+    padding: 20px 25px;
+    height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+#bottom-bar p {
+    color: #F7F4BF;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+#subtitle-text {
+    font-size: 13px;
+    color: #8B7A4E;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* ... (mantenemos los estilos anteriores de #main-content y .action-button.primary) ... */
+
+/* CONTENEDOR DE CRÉDITOS */
+.credits-container {
+    background-color: #a89a85; /* Color beige oscuro similar al de la referencia */
+    padding: 15px;
+    border-radius: 2px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.credits-title {
+    font-size: 14px;
+    color: #3b302a;
+    text-align: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #6d6457;
+    padding-bottom: 5px;
+    letter-spacing: 2px;
+}
+
+.credits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Espacio entre cada persona */
+    max-height: 200px; /* Altura máxima por si añades muchos, para que se pueda hacer scroll */
+    overflow-y: auto;
+}
+
+.credit-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.credit-item .name {
+    font-size: 13px;
+    color: #241404;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.credit-item .role {
+    font-size: 10px;
+    color: #5a4d3f;
+    text-transform: uppercase;
+}
+
+/* Personalización del scroll por si la lista crece mucho */
+.credits-list::-webkit-scrollbar {
+    width: 4px;
+}
+.credits-list::-webkit-scrollbar-thumb {
+    background: #6d6457;
+}

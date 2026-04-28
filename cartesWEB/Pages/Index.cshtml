@@ -1,10 +1,98 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Inicio";
+    Layout = null;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="/css/inicio.css" asp-append-version="true">
+</head>
+<body>
+
+    <div id="desktop-bg"></div>
+
+    <main id="app">
+        <section id="game">
+            
+            <div id="main-content">
+                <img src="assets/img/titulo.png" alt="Imagen Principal" class="main-img">
+
+                <div class="menu-buttons">
+                    <button class="action-button primary" onclick="irAlJuego()">
+                        HISTORIA
+                    </button>
+                    
+                    <div class="credits-container">
+                        <h3 class="credits-title">CRÉDITS</h3>
+                        
+                        <div class="credits-list">
+                            <div class="credit-item">
+                                <span class="name">ERIC FUENTES</span>
+                                <span class="role">Programador, Dissenyador e Ideador</span>
+                            </div>
+
+                            <div class="credit-item">
+                                <span class="name">RUBÉN ARÍN</span>
+                                <span class="role">Ideador de Cartes</span>
+                            </div>
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bottom-bar">
+                <p>Record Personal:</p>
+                <span id="subtitle-text">X setmanes al poder.</span>
+            </div>
+
+        </section>
+    </main>
+<script>
+    function irAlJuego() {
+        // 1. Creamos un div negro que cubra toda la pantalla
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100vw';
+        overlay.style.height = '100vh';
+        overlay.style.backgroundColor = '#000000'; // Fondo negro
+        overlay.style.zIndex = '9999';
+        overlay.style.opacity = '0'; // Empieza transparente
+        overlay.style.transition = 'opacity 0.8s ease-in-out'; // Tarda 0.8s en ponerse negro
+        overlay.style.pointerEvents = 'none';
+        
+        document.body.appendChild(overlay);
+
+        // 2. Un micro-segundo después, le decimos que se ponga opaco (inicia la animación)
+        setTimeout(() => {
+            overlay.style.opacity = '1';
+        }, 10);
+
+        // 3. Cuando termina la animación negra (0.8s), cambiamos de página
+        setTimeout(() => {
+            location.href = '/Cartes';
+        }, 800);
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Buscamos el valor guardado en la memoria del navegador
+        const recordGuardado = localStorage.getItem('record_semanas') || 0;
+        
+        // Actualizamos el texto del subtítulo
+        const subtitle = document.getElementById("subtitle-text");
+        if (subtitle) {
+            subtitle.textContent = recordGuardado + " setmanes al poder.";
+        }
+    });
+</script>
+</body>
+</html>

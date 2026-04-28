@@ -105,8 +105,26 @@ async function inicializarJuego() {
         updateStats();
         prepararSiguienteCarta(true); // true = es el inicio del juego
         renderJuego();
+
+        // --- NUEVO: OCULTAR PANTALLA DE CARGA ---
+        // Le damos un pequeño respiro de 500ms para que el navegador pinte las imágenes
+        setTimeout(() => {
+            const overlay = document.getElementById('loading-overlay');
+            if (overlay) {
+                overlay.classList.add('fade-out'); // Activa la transición CSS a opacity 0
+                
+                // Lo borramos del HTML tras 1 segundo (lo que dura la transición)
+                setTimeout(() => {
+                    overlay.remove();
+                }, 1000); 
+            }
+        }, 500);
+
     } catch (error) {
         console.error("Error al conectar con la API:", error);
+        // Opcional: Cambiar el texto de "Cargando..." a "Error de conexión"
+        const loadingText = document.querySelector('.loading-text');
+        if (loadingText) loadingText.textContent = "ERROR AL CARGAR";
     }
 }
 
@@ -396,6 +414,15 @@ function ejecutarAnimacionCambio() {
 
 // --- AÑADIDO: FUNCIÓN DE REINICIO CON FUNDIDO Y SONIDO DE CUERVO ---
 function reiniciarJuegoConFundido() {
+    // --- NUEVO: GUARDAR RÉCORD PERSONAL ---
+    const recordActual = localStorage.getItem('record_semanas') || 0;
+    
+    // Si las semanas actuales son más que el récord, guardamos el nuevo récord
+    if (semanes > parseInt(recordActual)) {
+        localStorage.setItem('record_semanas', semanes);
+    }
+    // ---------------------------------------
+
     playSound(cuervoSound);
 
     // Crear div negro para el fundido
