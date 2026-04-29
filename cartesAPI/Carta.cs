@@ -1,4 +1,4 @@
-﻿namespace cartesAPI;
+namespace cartesAPI;
 
 using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
@@ -28,13 +28,17 @@ public class Carta
     [Column("requiresCardId")]
     public int? RequiresCardId { get; set; }
 
-    // NUEVO: Sistema de banderas
     [Column("requiresFlag")]
     public string? RequiresFlag { get; set; }
 
+    // NUEVO: campo para las cartas de tutorial (opcional, solo lo tienen ellas)
+    [Column("isTutorial")]
+    public bool? IsTutorial { get; set; }
+
+    // Nullable: las cartas de tutorial no tienen left/right
     [Column("left")]
-    public Opcion Left { get; set; } = null!;
+    public Opcion? Left { get; set; }
     
     [Column("right")]
-    public Opcion Right { get; set; } = null!;
+    public Opcion? Right { get; set; }
 }

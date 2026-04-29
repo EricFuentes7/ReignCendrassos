@@ -116,6 +116,13 @@ async function inicializarJuego() {
                 // Lo borramos del HTML tras 1 segundo (lo que dura la transición)
                 setTimeout(() => {
                     overlay.remove();
+
+                    // --- NUEVO: MOSTRAR TUTORIAL SI ES LA PRIMERA VEGADA ---
+                    if (!localStorage.getItem('tutorialMostrat')) {
+                        mostrarTutorial();
+                    }
+                    // --------------------------------------------------------
+
                 }, 1000); 
             }
         }, 500);
@@ -128,10 +135,146 @@ async function inicializarJuego() {
     }
 }
 
+// --- NUEVO: TUTORIAL DE PRIMERA VEGADA ---
+function mostrarTutorial() {
+    const cartasTutorial = todasLasCartas
+        .filter(c => c.isTutorial === true)
+        .sort((a, b) => a.id - b.id);
+
+    if (cartasTutorial.length === 0) return;
+
+    const ericPersonaje = getPersonaje("EricFuentes");
+    let indexActual = 0;
+
+    // Overlay de fons
+    const overlay = document.createElement('div');
+    overlay.id = 'tutorial-overlay';
+    overlay.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(0,0,0,0.88); z-index: 10000;
+        display: flex; align-items: center; justify-content: center;
+        padding: 24px; box-sizing: border-box;
+        animation: tutorialFadeIn 0.4s ease;
+    `;
+
+    // Estil d'animació
+    const styleTag = document.createElement('style');
+    styleTag.textContent = `
+        @keyframes tutorialFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes tutorialFadeOut { from { opacity: 1; } to { opacity: 0; } }
+        #tutorial-card { animation: tutorialFadeIn 0.3s ease; }
+        #tutorial-btn:hover { filter: brightness(1.15); }
+        #tutorial-btn:active { transform: scale(0.97); }
+    `;
+    document.head.appendChild(styleTag);
+
+    // Targeta del diàleg
+    const card = document.createElement('div');
+    card.id = 'tutorial-card';
+    card.style.cssText = `
+        background: #12121e;
+        border: 2px solid #c0392b;
+        border-radius: 18px;
+        padding: 28px 24px 24px;
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        font-family: inherit;
+        box-shadow: 0 8px 40px rgba(192,57,43,0.35);
+    `;
+
+    // Imatge del personatge
+    const img = document.createElement('img');
+    img.src = ericPersonaje.image || '';
+    img.alt = 'Eric Fuentes';
+    img.style.cssText = `
+        width: 88px; height: 88px; border-radius: 50%;
+        object-fit: cover; margin-bottom: 10px;
+        border: 3px solid #c0392b;
+        display: block; margin-left: auto; margin-right: auto;
+    `;
+
+    // Nom del personatge
+    const nom = document.createElement('p');
+    nom.textContent = ericPersonaje.name || 'Eric Fuentes';
+    nom.style.cssText = `
+        font-weight: bold; color: #c0392b;
+        margin: 0 0 16px; font-size: 14px; letter-spacing: 1px;
+        text-transform: uppercase;
+    `;
+
+    // Text del diàleg
+    const text = document.createElement('p');
+    text.style.cssText = `
+        font-size: 16px; line-height: 1.6;
+        margin: 0 0 20px; color: #eeeeee;
+        min-height: 72px;
+    `;
+
+    // Comptador de pàgina
+    const comptador = document.createElement('p');
+    comptador.style.cssText = `
+        font-size: 12px; color: #666; margin: 0 0 18px; letter-spacing: 1px;
+    `;
+
+    // Botó
+    const btn = document.createElement('button');
+    btn.id = 'tutorial-btn';
+    btn.style.cssText = `
+        background: #c0392b; color: #fff; border: none;
+        border-radius: 10px; padding: 13px 0;
+        font-size: 16px; font-weight: bold;
+        cursor: pointer; width: 100%;
+        transition: filter 0.15s, transform 0.1s;
+        letter-spacing: 0.5px;
+    `;
+
+    function actualitzarDialeg() {
+        const carta = cartasTutorial[indexActual];
+        text.textContent = carta.text;
+        comptador.textContent = `${indexActual + 1} / ${cartasTutorial.length}`;
+        btn.textContent = indexActual < cartasTutorial.length - 1 ? 'Següent →' : '¡Comencem!';
+    }
+
+    btn.addEventListener('click', () => {
+        indexActual++;
+        if (indexActual >= cartasTutorial.length) {
+            localStorage.setItem('tutorialMostrat', 'true');
+            overlay.style.animation = 'tutorialFadeOut 0.3s ease forwards';
+            setTimeout(() => {
+                overlay.remove();
+                styleTag.remove();
+            }, 320);
+        } else {
+            // Petit fade entre diàlegs
+            text.style.opacity = '0';
+            comptador.style.opacity = '0';
+            setTimeout(() => {
+                actualitzarDialeg();
+                text.style.transition = 'opacity 0.25s';
+                comptador.style.transition = 'opacity 0.25s';
+                text.style.opacity = '1';
+                comptador.style.opacity = '1';
+            }, 150);
+        }
+    });
+
+    card.append(img, nom, text, comptador, btn);
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    actualitzarDialeg();
+}
+// -----------------------------------------
+
 // --- GAME LOGIC (CARDS & RULES) ---
 // --- NUEVO: OBTENER CARTA CON FILTRO DE BANDERAS Y SALVAVIDAS ---
 function obtenerCartaAleatoria() {
     const cartasValidas = todasLasCartas.filter(carta => {
+        // --- NUEVO: Excloure les cartes de tutorial del joc normal ---
+        if (carta.isTutorial) return false;
+
         // 1. Reglas básicas originales
         if (!carta.isRepeatable && cartasJugadas.has(carta.id)) return false;
         if (carta.requiresCardId !== null && carta.requiresCardId !== "" && !cartasJugadas.has(carta.requiresCardId)) return false;
