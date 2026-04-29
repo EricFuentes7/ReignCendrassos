@@ -32,8 +32,6 @@ cuervoSound.volume = 1.0;
 let lastDeltaSign = 0;
 let semanes = 0;
 
-
-
 function playSound(audio) {
     audio.currentTime = 0;
     audio.play().catch(() => {});
@@ -46,8 +44,8 @@ document.addEventListener('pointerdown', () => {
 
 let todasLasCartas = [];
 let todosLosPersonajes = [];
-let cartasJugadas = new Set(); // Para guardar los IDs de las cartas ya jugadas
-let idProximaCartaForzada = null; // Si una carta te obliga a ir a un ID concreto
+let cartasJugadas = new Set();
+let idProximaCartaForzada = null;
 
 let cartaActualObj = null;
 let proximaCartaObj = null;
@@ -59,7 +57,7 @@ let stats = {
     diners: 50
 };
 
-// --- NUEVO: BANDERAS ACTIVAS AL INICIAR ---
+// --- BANDERAS ACTIVAS AL INICIAR ---
 let banderasActivas = new Set([
     "xavi_activo",
     "rosa_activa"
@@ -103,225 +101,75 @@ async function inicializarJuego() {
         todosLosPersonajes = await personajesRes.json();
 
         updateStats();
-        prepararSiguienteCarta(true); // true = es el inicio del juego
+        prepararSiguienteCarta(true);
         renderJuego();
 
-        // --- NUEVO: OCULTAR PANTALLA DE CARGA ---
-        // Le damos un pequeño respiro de 500ms para que el navegador pinte las imágenes
         setTimeout(() => {
             const overlay = document.getElementById('loading-overlay');
             if (overlay) {
-                overlay.classList.add('fade-out'); // Activa la transición CSS a opacity 0
-                
-                // Lo borramos del HTML tras 1 segundo (lo que dura la transición)
+                overlay.classList.add('fade-out');
                 setTimeout(() => {
                     overlay.remove();
-
-                    // --- NUEVO: MOSTRAR TUTORIAL SI ES LA PRIMERA VEGADA ---
-                    if (!localStorage.getItem('tutorialMostrat')) {
-                        mostrarTutorial();
-                    }
-                    // --------------------------------------------------------
-
-                }, 1000); 
+                }, 1000);
             }
         }, 500);
 
     } catch (error) {
         console.error("Error al conectar con la API:", error);
-        // Opcional: Cambiar el texto de "Cargando..." a "Error de conexión"
         const loadingText = document.querySelector('.loading-text');
         if (loadingText) loadingText.textContent = "ERROR AL CARGAR";
     }
 }
 
-// --- NUEVO: TUTORIAL DE PRIMERA VEGADA ---
-function mostrarTutorial() {
-    const cartasTutorial = todasLasCartas
-        .filter(c => c.isTutorial === true)
-        .sort((a, b) => a.id - b.id);
-
-    if (cartasTutorial.length === 0) return;
-
-    const ericPersonaje = getPersonaje("EricFuentes");
-    let indexActual = 0;
-
-    // Overlay de fons
-    const overlay = document.createElement('div');
-    overlay.id = 'tutorial-overlay';
-    overlay.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(0,0,0,0.88); z-index: 10000;
-        display: flex; align-items: center; justify-content: center;
-        padding: 24px; box-sizing: border-box;
-        animation: tutorialFadeIn 0.4s ease;
-    `;
-
-    // Estil d'animació
-    const styleTag = document.createElement('style');
-    styleTag.textContent = `
-        @keyframes tutorialFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes tutorialFadeOut { from { opacity: 1; } to { opacity: 0; } }
-        #tutorial-card { animation: tutorialFadeIn 0.3s ease; }
-        #tutorial-btn:hover { filter: brightness(1.15); }
-        #tutorial-btn:active { transform: scale(0.97); }
-    `;
-    document.head.appendChild(styleTag);
-
-    // Targeta del diàleg
-    const card = document.createElement('div');
-    card.id = 'tutorial-card';
-    card.style.cssText = `
-        background: #12121e;
-        border: 2px solid #c0392b;
-        border-radius: 18px;
-        padding: 28px 24px 24px;
-        max-width: 400px;
-        width: 100%;
-        text-align: center;
-        color: #fff;
-        font-family: inherit;
-        box-shadow: 0 8px 40px rgba(192,57,43,0.35);
-    `;
-
-    // Imatge del personatge
-    const img = document.createElement('img');
-    img.src = ericPersonaje.image || '';
-    img.alt = 'Eric Fuentes';
-    img.style.cssText = `
-        width: 88px; height: 88px; border-radius: 50%;
-        object-fit: cover; margin-bottom: 10px;
-        border: 3px solid #c0392b;
-        display: block; margin-left: auto; margin-right: auto;
-    `;
-
-    // Nom del personatge
-    const nom = document.createElement('p');
-    nom.textContent = ericPersonaje.name || 'Eric Fuentes';
-    nom.style.cssText = `
-        font-weight: bold; color: #c0392b;
-        margin: 0 0 16px; font-size: 14px; letter-spacing: 1px;
-        text-transform: uppercase;
-    `;
-
-    // Text del diàleg
-    const text = document.createElement('p');
-    text.style.cssText = `
-        font-size: 16px; line-height: 1.6;
-        margin: 0 0 20px; color: #eeeeee;
-        min-height: 72px;
-    `;
-
-    // Comptador de pàgina
-    const comptador = document.createElement('p');
-    comptador.style.cssText = `
-        font-size: 12px; color: #666; margin: 0 0 18px; letter-spacing: 1px;
-    `;
-
-    // Botó
-    const btn = document.createElement('button');
-    btn.id = 'tutorial-btn';
-    btn.style.cssText = `
-        background: #c0392b; color: #fff; border: none;
-        border-radius: 10px; padding: 13px 0;
-        font-size: 16px; font-weight: bold;
-        cursor: pointer; width: 100%;
-        transition: filter 0.15s, transform 0.1s;
-        letter-spacing: 0.5px;
-    `;
-
-    function actualitzarDialeg() {
-        const carta = cartasTutorial[indexActual];
-        text.textContent = carta.text;
-        comptador.textContent = `${indexActual + 1} / ${cartasTutorial.length}`;
-        btn.textContent = indexActual < cartasTutorial.length - 1 ? 'Següent →' : '¡Comencem!';
-    }
-
-    btn.addEventListener('click', () => {
-        indexActual++;
-        if (indexActual >= cartasTutorial.length) {
-            localStorage.setItem('tutorialMostrat', 'true');
-            overlay.style.animation = 'tutorialFadeOut 0.3s ease forwards';
-            setTimeout(() => {
-                overlay.remove();
-                styleTag.remove();
-            }, 320);
-        } else {
-            // Petit fade entre diàlegs
-            text.style.opacity = '0';
-            comptador.style.opacity = '0';
-            setTimeout(() => {
-                actualitzarDialeg();
-                text.style.transition = 'opacity 0.25s';
-                comptador.style.transition = 'opacity 0.25s';
-                text.style.opacity = '1';
-                comptador.style.opacity = '1';
-            }, 150);
-        }
-    });
-
-    card.append(img, nom, text, comptador, btn);
-    overlay.appendChild(card);
-    document.body.appendChild(overlay);
-
-    actualitzarDialeg();
-}
-// -----------------------------------------
-
-// --- GAME LOGIC (CARDS & RULES) ---
-// --- NUEVO: OBTENER CARTA CON FILTRO DE BANDERAS Y SALVAVIDAS ---
+// --- GAME LOGIC ---
 function obtenerCartaAleatoria() {
     const cartasValidas = todasLasCartas.filter(carta => {
-        // --- NUEVO: Excloure les cartes de tutorial del joc normal ---
+        // Excloure sempre les cartes de tutorial del joc normal
         if (carta.isTutorial) return false;
 
-        // 1. Reglas básicas originales
         if (!carta.isRepeatable && cartasJugadas.has(carta.id)) return false;
         if (carta.requiresCardId !== null && carta.requiresCardId !== "" && !cartasJugadas.has(carta.requiresCardId)) return false;
         if (cartaActualObj && carta.id === cartaActualObj.id) return false;
 
-        // 2. Motor de Banderas estricto del JSON
-        if (carta.requiresFlag && !banderasActivas.has(carta.requiresFlag)) {
-            return false;
-        }
+        if (carta.requiresFlag && !banderasActivas.has(carta.requiresFlag)) return false;
 
-        // --- 3. FILTROS SALVAVIDAS ESTRICTOS (¡Aquí está la magia!) ---
-        
-        // Xavi solo sale si está activo (o si es su carta de retorno que tiene requiresFlag)
         if (carta.character === "XaviSala" && !banderasActivas.has("xavi_activo") && !carta.requiresFlag) return false;
-
-        // Rosa solo sale si está activa (o si es su carta de llamada desde el retiro)
         if (carta.character === "RosaCavalle" && !banderasActivas.has("rosa_activa") && !carta.requiresFlag) return false;
-
-        // Coral solo sale si está activa
         if (carta.character === "CoralPlanaguma" && !banderasActivas.has("coral_activa") && !carta.requiresFlag) return false;
-
-        // Novedad: Si Coral ya se ha despedido (activó xavi_vuelve), la bloqueamos para que no repita
         if (carta.character === "CoralPlanaguma" && banderasActivas.has("xavi_vuelve")) return false;
-
-        // Novedad: Andrea (TODA Andrea) solo sale si es la substituta oficial
         if (carta.character === "AndreaAndaluz" && !banderasActivas.has("andrea_substituta") && !carta.requiresFlag) return false;
 
         return true;
     });
 
     if (cartasValidas.length === 0) {
-        console.warn("¡No quedan cartas válidas en el mazo! Reiniciando ciclo...");
-        return todasLasCartas[0];
+        console.warn("No quedan cartas válidas en el mazo! Reiniciando ciclo...");
+        return todasLasCartas.find(c => !c.isTutorial) || todasLasCartas[0];
     }
 
     const indiceRandom = Math.floor(Math.random() * cartasValidas.length);
     return cartasValidas[indiceRandom];
 }
 
-// --- NUEVO: PREPARAR SIGUIENTE CARTA ARREGLADA ---
 function prepararSiguienteCarta(esInicio = false) {
     if (esInicio) {
+        // Si és la primera vegada, comencem pel tutorial
+        if (!localStorage.getItem('tutorialMostrat')) {
+            localStorage.setItem('tutorialMostrat', 'true');
+            const tutorialCards = todasLasCartas
+                .filter(c => c.isTutorial)
+                .sort((a, b) => a.id - b.id);
+
+            if (tutorialCards.length > 0) {
+                cartaActualObj = tutorialCards[0];
+                proximaCartaObj = tutorialCards[1] || obtenerCartaAleatoria();
+                return;
+            }
+        }
+        // Partida normal (o ja ha vist el tutorial)
         cartaActualObj = obtenerCartaAleatoria();
         proximaCartaObj = obtenerCartaAleatoria();
     } else {
-        // Como la carta forzada ya se metió en la recámara durante el swipe,
-        // simplemente la pasamos al frente y generamos una nueva detrás.
         cartaActualObj = proximaCartaObj;
         proximaCartaObj = obtenerCartaAleatoria();
     }
@@ -334,18 +182,16 @@ function getPersonaje(key) {
 function renderJuego() {
     if (!cartaActualObj || !proximaCartaObj) return;
 
-    // --- MODIFICADO: LÓGICA DE RENDERIZADO PARA MOSTRAR LA IMAGEN Y NOMBRE DE LA MUERTE ---
     if (cartaActualObj.id === "carta_muerte") {
         textCard.textContent = cartaActualObj.text;
         nomPersonatge.textContent = cartaActualObj.customName;
         imatgePersonatge.src = cartaActualObj.customImg;
-        
-        imatgePersonatge.style.display = ""; 
-        nextCharacterImg.style.display = "none"; // Atrás no mostramos a nadie porque se reinicia
+        imatgePersonatge.style.display = "";
+        nextCharacterImg.style.display = "none";
     } else {
         imatgePersonatge.style.display = "";
         nextCharacterImg.style.display = "";
-        
+
         const personajeActual = getPersonaje(cartaActualObj.character);
         textCard.textContent = cartaActualObj.text;
         imatgePersonatge.src = personajeActual.image;
@@ -378,7 +224,6 @@ hammer.on('panmove', (e) => {
     const translate = Math.max(-150, Math.min(150, e.deltaX));
     aGirar.style.transform = `rotate(${rotation}deg) translateX(${translate}px)`;
 
-    // Sonido al cruzar el ángulo 0
     const currentSign = e.deltaX > 0 ? 1 : e.deltaX < 0 ? -1 : 0;
     if (currentSign !== 0 && lastDeltaSign !== 0 && currentSign !== lastDeltaSign) {
         playSound(selectSound);
@@ -398,7 +243,6 @@ hammer.on('panmove', (e) => {
             const statId = statDiv.id;
             const dot = statDiv.querySelector('.indicator');
 
-            // AQUÍ ESTÁ EL CAMBIO: Se añadió && efectos[statId] !== 0
             if (efectos && efectos[statId] !== undefined && efectos[statId] !== 0 && Math.abs(translate) > 25) {
                 const magnitude = Math.abs(efectos[statId]);
                 const scaleValue = magnitude > 10 ? 1.4 : 0.8;
@@ -418,16 +262,15 @@ hammer.on('panend', (e) => {
     resetIndicators();
     lastDeltaSign = 0;
 
-    if (translate >= threshold || translate <= -threshold){
-        
-        // --- AÑADIDO: SI DESLIZAMOS LA CARTA DE MUERTE, CORTAMOS LA EJECUCIÓN Y REINICIAMOS ---
+    if (translate >= threshold || translate <= -threshold) {
+
         if (cartaActualObj && cartaActualObj.id === "carta_muerte") {
             const endX = translate >= threshold ? 350 : -350;
             const endRot = translate >= threshold ? 20 : -20;
             aGirar.style.transition = 'transform 0.4s ease-out';
             aGirar.style.transform = `translateY(600px) translateX(${endX}px) rotate(${endRot}deg)`;
             reiniciarJuegoConFundido();
-            return; 
+            return;
         }
 
         const isRight = translate >= threshold;
@@ -435,49 +278,51 @@ hammer.on('panend', (e) => {
         const accionTomada = cartaActualObj[decision];
         const efectos = accionTomada.effects;
 
-        // 1. Aplicar stats y añadir clases de color
-        for (const stat in efectos) {
-            if (stats.hasOwnProperty(stat)) {
-                const valorEfecto = efectos[stat];
-                const statDiv = document.getElementById(stat);
+        // Si és carta de tutorial no apliquem stats ni banderes ni setmanes
+        const esTutorial = !!cartaActualObj.isTutorial;
 
-                // --- NUEVO: Feedback visual de color ---
-                if (statDiv && valorEfecto !== 0) {
-                    const claseColor = valorEfecto > 0 ? 'subiendo' : 'bajando';
-                    statDiv.classList.add(claseColor);
+        if (!esTutorial) {
+            for (const stat in efectos) {
+                if (stats.hasOwnProperty(stat)) {
+                    const valorEfecto = efectos[stat];
+                    const statDiv = document.getElementById(stat);
+
+                    if (statDiv && valorEfecto !== 0) {
+                        const claseColor = valorEfecto > 0 ? 'subiendo' : 'bajando';
+                        statDiv.classList.add(claseColor);
+                    }
+
+                    stats[stat] += valorEfecto;
+                    stats[stat] = Math.max(0, Math.min(100, stats[stat]));
                 }
-                // ---------------------------------------
-
-                stats[stat] += valorEfecto;
-                stats[stat] = Math.max(0, Math.min(100, stats[stat]));
             }
+            updateStats();
         }
-        updateStats();
 
-        // --- AÑADIDO: COMPROBAR SI HAS MUERTO DESPUÉS DE APLICAR STATS ---
         let hasMuerto = false;
         let textoMuerte = "";
         let imgMuerte = "";
         let nomMuerte = "";
-        
-        for (const stat in stats) {
-            if (stats[stat] <= 0) {
-                hasMuerto = true;
-                textoMuerte = `Has fracassat. La teva capacitat de ${stat} ha arribat a 0.`;
-                imgMuerte = `/assets/img/deaths/muerte_${stat}_0.png`; // <--- Ajusta la ruta y extensión aquí
-                nomMuerte = `Mort per manca de ${stat}`;
-                break;
-            } else if (stats[stat] >= 100) {
-                hasMuerto = true;
-                textoMuerte = `Has fracassat. La teva capacitat de ${stat} ha arribat a 100.`;
-                imgMuerte = `/assets/img/deaths/muerte_${stat}_100.png`; // <--- Ajusta la ruta y extensión aquí
-                nomMuerte = `Mort per excés de ${stat}`;
-                break;
+
+        if (!esTutorial) {
+            for (const stat in stats) {
+                if (stats[stat] <= 0) {
+                    hasMuerto = true;
+                    textoMuerte = `Has fracassat. La teva capacitat de ${stat} ha arribat a 0.`;
+                    imgMuerte = `/assets/img/deaths/muerte_${stat}_0.png`;
+                    nomMuerte = `Mort per manca de ${stat}`;
+                    break;
+                } else if (stats[stat] >= 100) {
+                    hasMuerto = true;
+                    textoMuerte = `Has fracassat. La teva capacitat de ${stat} ha arribat a 100.`;
+                    imgMuerte = `/assets/img/deaths/muerte_${stat}_100.png`;
+                    nomMuerte = `Mort per excés de ${stat}`;
+                    break;
+                }
             }
         }
 
         if (hasMuerto) {
-            // Inyectamos la carta de muerte para la siguiente ronda creada "al vuelo"
             proximaCartaObj = {
                 id: "carta_muerte",
                 text: textoMuerte,
@@ -488,29 +333,27 @@ hammer.on('panend', (e) => {
                 right: { label: "Fi", effects: {} }
             };
         } else {
-            // --- NUEVO: ACTUALIZAR BANDERAS ---
-            if (accionTomada.setFlag) banderasActivas.add(accionTomada.setFlag);
-            if (accionTomada.removeFlag) banderasActivas.delete(accionTomada.removeFlag);
+            if (!esTutorial) {
+                if (accionTomada.setFlag) banderasActivas.add(accionTomada.setFlag);
+                if (accionTomada.removeFlag) banderasActivas.delete(accionTomada.removeFlag);
+            }
 
-            // --- NUEVO: ARREGLO DEL DELAY DEL NEXTCARDID ---
             if (accionTomada.nextCardId !== null && accionTomada.nextCardId !== "") {
                 proximaCartaObj = todasLasCartas.find(c => c.id === accionTomada.nextCardId) || obtenerCartaAleatoria();
                 const personajeProximo = getPersonaje(proximaCartaObj.character);
-                nextCharacterImg.src = personajeProximo.image; 
+                nextCharacterImg.src = personajeProximo.image;
             }
 
-            // Sumar semana
-            semanes++;
-            document.getElementById('semanes-text').textContent = `${semanes} setmanes al poder`;
+            if (!esTutorial) {
+                semanes++;
+                document.getElementById('semanes-text').textContent = `${semanes} setmanes al poder`;
+            }
         }
 
-        // 2. Registrar carta como jugada
         cartasJugadas.add(cartaActualObj.id);
 
-        // 4. Sonido swipe
         playSound(swipeSound);
 
-        // 5. Animar la salida
         const endX = isRight ? 350 : -350;
         const endRot = isRight ? 20 : -20;
         aGirar.style.transition = 'transform 0.4s ease-out';
@@ -531,15 +374,12 @@ function ejecutarAnimacionCambio() {
     }, 100);
 
     setTimeout(() => {
-        // Preparamos los datos de la siguiente ronda
         prepararSiguienteCarta();
         renderJuego();
 
-        // --- NUEVO: Limpiar colores de stats ---
         document.querySelectorAll('.stat').forEach(statDiv => {
             statDiv.classList.remove('subiendo', 'bajando');
         });
-        // ---------------------------------------
 
         aGirar.style.transition = 'none';
         flipperElement.style.transition = 'none';
@@ -555,20 +395,15 @@ function ejecutarAnimacionCambio() {
     }, 700);
 }
 
-// --- AÑADIDO: FUNCIÓN DE REINICIO CON FUNDIDO Y SONIDO DE CUERVO ---
+// --- REINICI AMB FUNDIDO I SO DE CORB ---
 function reiniciarJuegoConFundido() {
-    // --- NUEVO: GUARDAR RÉCORD PERSONAL ---
     const recordActual = localStorage.getItem('record_semanas') || 0;
-    
-    // Si las semanas actuales son más que el récord, guardamos el nuevo récord
     if (semanes > parseInt(recordActual)) {
         localStorage.setItem('record_semanas', semanes);
     }
-    // ---------------------------------------
 
     playSound(cuervoSound);
 
-    // Crear div negro para el fundido
     const blackScreen = document.createElement('div');
     blackScreen.style.position = 'fixed';
     blackScreen.style.top = '0';
@@ -579,15 +414,13 @@ function reiniciarJuegoConFundido() {
     blackScreen.style.zIndex = '9999';
     blackScreen.style.opacity = '0';
     blackScreen.style.transition = 'opacity 1s ease-in-out';
-    blackScreen.style.pointerEvents = 'none'; 
+    blackScreen.style.pointerEvents = 'none';
     document.body.appendChild(blackScreen);
 
-    // Iniciar fundido a negro
     setTimeout(() => {
         blackScreen.style.opacity = '1';
     }, 50);
 
-    // Una vez está todo negro (1s de transición), reiniciamos variables
     setTimeout(() => {
         stats = {
             educacio: 50,
@@ -597,7 +430,7 @@ function reiniciarJuegoConFundido() {
         };
         semanes = 0;
         document.getElementById('semanes-text').textContent = `${semanes} setmanes al poder`;
-        
+
         cartasJugadas.clear();
         banderasActivas = new Set([
             "xavi_activo",
@@ -605,24 +438,20 @@ function reiniciarJuegoConFundido() {
         ]);
 
         updateStats();
-        
+
         document.querySelectorAll('.stat').forEach(statDiv => {
             statDiv.classList.remove('subiendo', 'bajando');
         });
 
-        // Reset de la carta girada para ponerla en su sitio
         aGirar.style.transition = 'none';
         aGirar.style.transform = 'translateY(0) translateX(0) rotate(0)';
         divDecision.style.opacity = '0';
 
-        // Recargar nueva ronda desde cero
         prepararSiguienteCarta(true);
         renderJuego();
 
-        // Quitar fundido (Fade in a la nueva partida)
         blackScreen.style.opacity = '0';
-        
-        // Destruir el div negro para que no estorbe en el DOM
+
         setTimeout(() => {
             blackScreen.remove();
         }, 1000);
