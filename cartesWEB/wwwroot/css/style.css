@@ -12,7 +12,8 @@
 
 body {
   background: #0e0e0e;
-  height: 100vh;
+  /* dvh evita que la barra del navegador móvil tape contenido */
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -26,25 +27,29 @@ body {
 }
 
 #app {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/* --- MÓVIL: ocupa toda la pantalla, sin huecos laterales ni verticales --- */
 #game {
-  width: 101%;
-  height: 101%;
-  max-width: 392px;
-  max-height: 782px;
+  width: 100%;
+  height: 100%;
   background-color: #bda867;
   color: #fff;
   display: flex;
   flex-direction: column;
 }
 
+/* --- ESCRITORIO: vuelve al look de "teléfono enmarcado" --- */
 @media (min-width: 768px) {
   #game {
+    width: 101%;
+    height: 101%;
+    max-width: 392px;
+    max-height: 782px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.6);
   }
 }
@@ -52,9 +57,11 @@ body {
 #character {
   text-align: center;
   position: relative;
-  height: 400px; /* Fija la altura (la misma que tenías en el HTML) */
-  flex-shrink: 0; /* Impide que Flexbox lo aplaste */
+  flex: 1;
+  min-height: 0;
+  overflow: hidden; /* La imagen no puede salir del área y tapar el nombre */
 }
+
 #characterDecision{
   opacity: 0;
   border-radius: 15px 15px 0px 0px;
@@ -76,9 +83,8 @@ body {
     transition: transform 0.2s ease;
     touch-action: none;
     z-index: 1;
-
-
 }
+
 #character img {
   flex: 1;
   margin: 16px;
@@ -89,10 +95,12 @@ body {
   text-align: center;
   font-size: 18px;
   width: 90%;
+  /* Nunca desborda el contenedor, mantiene proporciones */
+  max-height: calc(100% - 32px);
+  object-fit: contain;
   touch-action: none;
-    pointer-events: none;
-    border-radius: 15px;
-
+  pointer-events: none;
+  border-radius: 15px;
 }
 
 #card {
@@ -102,8 +110,9 @@ body {
   text-align: center;
   font-size: 18px;
   margin-top: 30px;
-  height: 80px; /* Fija la altura máxima que ocupará el texto */
-  flex-shrink: 0; /* Impide que Flexbox lo aplaste */
+  height: 80px;       /* Altura fija: el texto no puede mover la carta */
+  overflow: hidden;   /* El texto largo se recorta, no empuja nada */
+  flex-shrink: 0;
 }
 
 #stats {
@@ -201,7 +210,6 @@ body {
 #aGirar {
   position: relative; 
   z-index: 10;
-  /* El resto de tu estilo se mantiene */
 }
 
 #deckStack {
@@ -215,32 +223,28 @@ body {
   display: block;
   border-radius: 15px;
   background: #1c1c1c;
-  /* Un pequeño borde o sombra para simular profundidad */
   box-shadow: 0 0 0 2px #332211; 
 }
 
 #characterName {
   text-align: center;
-  height: 40px; /* Dale una altura fija suficiente para una o dos líneas */
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; /* Impide que Flexbox lo aplaste */
+  flex-shrink: 0;
 }
 
 /* --- EFECTOS DE FEEDBACK DE STATS --- */
 
-/* Cuando la estadística sube (Verde) */
 .stat.subiendo .fill {
   background-color: #2ecc71 !important;
 }
 
-/* Cuando la estadística baja (Rojo) */
 .stat.bajando .fill {
   background-color: #e74c3c !important;
 }
 
-/* Transición suave para el cambio de color */
 .fill {
   transition: height 0.3s ease-out, background-color 0.3s ease;
 }
@@ -254,9 +258,7 @@ body {
   justify-content: center;
   flex-direction: column;
   flex-shrink: 0;
-
-  /* Esto empuja la barra al final del contenedor flex (#game) */
-  margin-top: auto; 
+  /* margin-top: auto ya no hace falta porque #character ocupa el espacio libre */
 }
 #bottom-bar p{
   color: #F7F4BF;
@@ -275,7 +277,6 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  /* Gradiente muy oscuro moviéndose */
   background: linear-gradient(270deg, #000000, #14110b, #000000, #1a1610);
   background-size: 400% 400%;
   z-index: 9999;
@@ -283,12 +284,11 @@ body {
   justify-content: center;
   align-items: center;
   opacity: 1;
-  transition: opacity 1s ease-in-out; /* Transición suave de 1 segundo */
+  transition: opacity 1s ease-in-out;
   animation: gradientMove 4s ease infinite;
-  pointer-events: all; /* Bloquea clics mientras carga */
+  pointer-events: all;
 }
 
-/* Clase que añadiremos con JS para ocultarlo */
 #loading-overlay.fade-out {
   opacity: 0;
   pointer-events: none; 
