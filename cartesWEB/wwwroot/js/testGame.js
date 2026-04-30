@@ -71,6 +71,8 @@ function updateStats() {
         if (container) {
             const fill = container.querySelector('.fill');
             fill.style.height = stat + '%';
+            const valueSpan = container.querySelector('.stat-value');
+            if (valueSpan) valueSpan.textContent = stat;
         }
     }
 }
