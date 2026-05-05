@@ -500,7 +500,7 @@
     "text": "Directora! Et truco des del meu retir espiritual zen. He somiat que els alumnes no saben pronunciar 'Motherboard'. Torno?",
     "isRepeatable": false,
     "requiresCardId": 14,
-    "requiresFlag": null,
+    "requiresFlag": "andrea_substituta",
     "isTutorial": null,
     "left": {
       "label": "Torna a treballar immediatament!",
@@ -3139,6 +3139,9 @@
     "character": "XaviSala",
     "text": "Els alumnes han piratejat el panell d'administració de la megafonia de l'institut.",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Canvia les credencials ràpid!",
       "nextCardId": null,
@@ -3147,7 +3150,9 @@
         "convivencia": -10,
         "diners": 0,
         "capacitatsClau": 15
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "A veure quina música posen...",
@@ -3157,7 +3162,9 @@
         "convivencia": 20,
         "diners": 0,
         "capacitatsClau": -15
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -3166,6 +3173,8 @@
     "text": "Algú ha trobat les credencials d'administrador del Moodle amagades en una còpia de seguretat antiga.",
     "isRepeatable": true,
     "requiresCardId": 113,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Canvia-les i expulsa el culpable",
       "nextCardId": null,
@@ -3174,7 +3183,9 @@
         "convivencia": -20,
         "diners": 0,
         "capacitatsClau": 10
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Confiem que no farà res...",
@@ -3184,7 +3195,9 @@
         "convivencia": 5,
         "diners": 0,
         "capacitatsClau": -20
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -3654,32 +3667,25 @@
     "character": "ManelArrabal",
     "text": "No suporto el WordPress, em posa nerviós. Podem fer servir una altra alternativa per al projecte del final?",
     "isRepeatable": true,
-    "requiresCardId": null,
-    "requiresFlag": null,
-    "isTutorial": null,
     "left": {
       "label": "Que usin Odoo",
       "nextCardId": null,
       "effects": {
-        "educacio": 10,
-        "convivencia": 5,
+        "educacio": -5,
+        "convivencia": -15,
         "diners": 0,
         "capacitatsClau": 5
-      },
-      "setFlag": null,
-      "removeFlag": null
+      }
     },
     "right": {
       "label": "No! Agafa i ensenya WordPress",
       "nextCardId": null,
       "effects": {
-        "educacio": -5,
-        "convivencia": -10,
+        "educacio": 5,
+        "convivencia": 10,
         "diners": 0,
-        "capacitatsClau": -5
-      },
-      "setFlag": null,
-      "removeFlag": null
+        "capacitatsClau": 5
+      }
     }
   },
   {
@@ -3687,6 +3693,9 @@
     "character": "EricFuentes",
     "text": "He trobat aquest disc, crec que es d'un Moodle, me'l puc quedar?",
     "isRepeatable": false,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Es clar!",
       "nextCardId": null,
@@ -3695,7 +3704,9 @@
         "convivencia": 5,
         "diners": -5,
         "capacitatsClau": -4
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "No, és del centre!",
@@ -3703,6 +3714,295 @@
       "effects": {
         "educacio": 0,
         "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 0
+      },
+      "setFlag": null,
+      "removeFlag": null
+    }
+  },
+  {
+    "id": 114,
+    "character": "DaniRayos",
+    "text": "Els meus alumnes no aprenen a fer servir HTML",
+    "isRepeatable": true,
+    "left": {
+      "label": "Utilitza Krigger of Crypto com exemple",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Posal's-hi un tutorial",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 5,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 115,
+    "character": "DaniRayos",
+    "text": "Els meus alumnes es queixen de que explico molt ràpid i no s'enteren absolutament de res.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Explica més a poc a poc i detalladament.",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": 5,
+        "diners": 0,
+        "capacitatsClau": 10
+      }
+    },
+    "right": {
+      "label": "Que s'esforcin i arribin al teu nivell!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -10,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 5
+      }
+    }
+  },
+  {
+    "id": 116,
+    "character": "AlbertIbiza",
+    "text": "Els alumnes a la pràctica de DHCP han fet un DHCP Spoofing, i m'han robat les credencials de tot. Els aprovo?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Tècnicament... Han fet la pràctica",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": -5
+      }
+    },
+    "right": {
+      "label": "No, és un delicte!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 5
+      }
+    }
+  },
+  {
+    "id": 117,
+    "character": "AlbertIbiza",
+    "text": "He enxampat als alumnes jugant a un servidor de Minecraft conjuntament a classe, què faig?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Pregunta la IP i raideja'ls!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -10,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": -10
+      }
+    },
+    "right": {
+      "label": "Incidència i exàmen sorpresa.",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -15,
+        "diners": 0,
+        "capacitatsClau": 5
+      }
+    }
+  },
+  {
+    "id": 118,
+    "character": "SilviaLlado",
+    "text": "Un alumne ha vomitat a la paret de la classe i la taca no marxa de cap manera. Aprofitem i pintem tota l'aula de nou?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Sí, contracteu un pintor",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 5,
+        "diners": -20,
+        "capacitatsClau": 5
+      }
+    },
+    "right": {
+      "label": "No! Penjarem un poster",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": -5,
+        "diners": 15,
+        "capacitatsClau": -5
+      }
+    }
+  },
+  {
+    "id": 119,
+    "character": "DaniRayos",
+    "text": "Els alumnes han trobat el meu canal de YouTube, està començant a fer-se popular.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Monetitza-ho, 10% pel centre!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 15,
+        "diners": 15,
+        "capacitatsClau": -5
+      }
+    },
+    "right": {
+      "label": "Tú a la teva feina!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -5,
+        "diners": -5,
+        "capacitatsClau": 5
+      }
+    }
+  },
+  {
+    "id": 120,
+    "character": "SilviaLlado",
+    "text": "He estat tot el curs ensenyant Vue i Laravel, però un alumne m'ha entregat el projecte sencer fet en React. Què faig amb ell?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Si funciona bé, aprova'l!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": -5
+      }
+    },
+    "right": {
+      "label": "Suspès, no compleix els requisits",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 5
+      }
+    }
+  },
+  {
+    "id": 121,
+    "character": "AlbertIbiza",
+    "text": "Directora, he agafat un Raspberry Pi de casa meva per muntar un laboratori de xarxes. El centre me'l paga?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Clar que sí!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 0,
+        "diners": -10,
+        "capacitatsClau": 10
+      }
+    },
+    "right": {
+      "label": "Hauries d'haver demanat permís",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -5,
+        "diners": 5,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 122,
+    "character": "AlbertSabria",
+    "text": "Un alumne m'ha enviat la seva pràctica en un document de Writer ple de macros ocultes... M'hauria de fiar i obrir-la?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Obre'l! Què és el pitjor que pot passar?",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": 15,
+        "diners": -10,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Rebutja'l fins que ho enviï net.",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": -10,
+        "diners": 0,
+        "capacitatsClau": 5
+      }
+    }
+  },
+  {
+    "id": 123,
+    "character": "RosaCavalle",
+    "text": "Estavem analitzant cançons i algú ha dit que posem Diabla, de Los Diozes, m'he quedat en shock...",
+    "isRepeatable": true,
+    "requiresFlag": "rosa_activa",
+    "left": {
+      "label": "És un bon tema!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Ni cas, et pago el metge per la oida...",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -10,
+        "diners": -10,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 124,
+    "character": "JaumePujol",
+    "text": "La meitat de DAW no sap la diferència entre LDAP i Active Directory. L'altra meitat tampoc però dissimulen millor.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Tornem al principi, classe zero",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": 0,
+        "diners": -10,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Ho descobriran sols a les pràctiques",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -10,
         "diners": 0,
         "capacitatsClau": 0
       }

@@ -5,7 +5,7 @@
 *.suo
 *.user
 *.sln.docstates
-
+mongoimport.exe
 # Build results
 
 [Dd]ebug/

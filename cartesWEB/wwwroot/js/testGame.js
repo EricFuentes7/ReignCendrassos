@@ -63,6 +63,23 @@ let banderasActivas = new Set([
     "rosa_activa"
 ]);
 
+// ─── ARCS DE PERSONATGES ──────────────────────────────────────────────────────
+// Per afegir un personatge amb arc:
+//   "NomCharacter": { activeFlag: "flag_que_l_activa" }
+//
+// Per bloquejar un personatge mentre un altre flag és actiu, afegeix blockedByFlag:
+//   "NomCharacter": { activeFlag: "flag_que_l_activa", blockedByFlag: "flag_que_el_bloqueja" }
+//
+// Les cartes de "retorn" (quan el personatge torna après d'haver marxat) han de tenir
+// requiresFlag apuntant al flag que indica que el personatge és fora (p.ex. "andrea_substituta").
+// ─────────────────────────────────────────────────────────────────────────────
+const ARCS = {
+    "XaviSala":       { activeFlag: "xavi_activo" },
+    "RosaCavalle":    { activeFlag: "rosa_activa" },
+    "CoralPlanaguma": { activeFlag: "coral_activa", blockedByFlag: "xavi_vuelve" },
+    "AndreaAndaluz":  { activeFlag: "andrea_substituta" },
+};
+
 // --- STATS LOGIC ---
 function updateStats() {
     for (const key in stats) {
@@ -135,11 +152,15 @@ function obtenerCartaAleatoria() {
 
         if (carta.requiresFlag && !banderasActivas.has(carta.requiresFlag)) return false;
 
-        if (carta.character === "XaviSala" && !banderasActivas.has("xavi_activo") && !carta.requiresFlag) return false;
-        if (carta.character === "RosaCavalle" && !banderasActivas.has("rosa_activa") && !carta.requiresFlag) return false;
-        if (carta.character === "CoralPlanaguma" && !banderasActivas.has("coral_activa") && !carta.requiresFlag) return false;
-        if (carta.character === "CoralPlanaguma" && banderasActivas.has("xavi_vuelve")) return false;
-        if (carta.character === "AndreaAndaluz" && !banderasActivas.has("andrea_substituta") && !carta.requiresFlag) return false;
+        const arc = ARCS[carta.character];
+        if (arc) {
+            if (!banderasActivas.has(arc.activeFlag)) {
+                // Personatge "fora": només mostrem cartes amb requiresFlag propi actiu
+                // (p.ex. cartes de "retorn" que requereixen el flag de substitut)
+                if (!carta.requiresFlag || !banderasActivas.has(carta.requiresFlag)) return false;
+            }
+            if (arc.blockedByFlag && banderasActivas.has(arc.blockedByFlag)) return false;
+        }
 
         return true;
     });
@@ -164,7 +185,9 @@ function prepararSiguienteCarta(esInicio = false) {
 
             if (tutorialCards.length > 0) {
                 cartaActualObj = tutorialCards[0];
-                proximaCartaObj = tutorialCards[1] || obtenerCartaAleatoria();
+                // Usem el nextCardId real per mostrar el personatge correcte al fons
+                const firstNextId = tutorialCards[0].left.nextCardId;
+                proximaCartaObj = todasLasCartas.find(c => c.id === firstNextId) || obtenerCartaAleatoria();
                 return;
             }
         }
