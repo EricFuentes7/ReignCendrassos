@@ -85,8 +85,18 @@
     "image": "assets/img/characters/Misterios_test.png"
   },
   {
+    "key": "PolCasinyol",
+    "name": "Pol Casinyol",
+    "image": "assets/img/characters/Test.webp"
+  },
+  {
     "key": "RosaCavalle",
     "name": "Rosa Cavallé",
+    "image": "assets/img/characters/Test.webp"
+  },
+  {
+    "key": "RubenArin",
+    "name": "Ruben Arín",
     "image": "assets/img/characters/Test.webp"
   },
   {
