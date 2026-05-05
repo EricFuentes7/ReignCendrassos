@@ -1,0 +1,117 @@
+[
+  {
+    "key": "AlbertIbiza",
+    "name": "Albert Ibiza",
+    "image": "assets/img/characters/Ibiza_test.png"
+  },
+  {
+    "key": "AlbertSabria",
+    "name": "Albert Sabria",
+    "image": "assets/img/characters/Test.webp"
+  },
+  {
+    "key": "AndreaAndaluz",
+    "name": "Andrea Andaluz",
+    "image": "assets/img/characters/Andrea_test.jpg"
+  },
+  {
+    "key": "CoralPlanaguma",
+    "name": "Coral Planagumà",
+    "image": "assets/img/characters/Coral_test.jpg"
+  },
+  {
+    "key": "DaniHerrera",
+    "name": "Dani Herrera",
+    "image": "assets/img/characters/Herrera_test.png"
+  },
+  {
+    "key": "DaniPrados",
+    "name": "Dani Prados",
+    "image": "assets/img/characters/Prados_test.png"
+  },
+  {
+    "key": "DaniRayos",
+    "name": "Dani Rayos",
+    "image": "assets/img/characters/Test.webp"
+  },
+  {
+    "key": "EricFuentes",
+    "name": "Eric Fuentes",
+    "image": "assets/img/characters/Eric_test.png"
+  },
+  {
+    "key": "FranGrano",
+    "name": "Fran Grañó",
+    "image": "assets/img/characters/Fran_test.png"
+  },
+  {
+    "key": "GenisDeTuero",
+    "name": "Genís De Tuero",
+    "image": "assets/img/characters/Genis_test.jpg"
+  },
+  {
+    "key": "Inspector",
+    "name": "Inspector",
+    "image": "assets/img/characters/Inspector_test.png"
+  },
+  {
+    "key": "IvanMartinez",
+    "name": "Ivan Martínez",
+    "image": "assets/img/characters/Ivan_test.jpg"
+  },
+  {
+    "key": "JaumePujol",
+    "name": "Jaume Pujol",
+    "image": "assets/img/characters/Test.webp"
+  },
+  {
+    "key": "JesusPicornell",
+    "name": "Jesus Picornell",
+    "image": "assets/img/characters/Jesus_test.png"
+  },
+  {
+    "key": "JuackyRubio",
+    "name": "Juacky Rubio",
+    "image": "assets/img/characters/Juacky_test.jpg"
+  },
+  {
+    "key": "ManelArrabal",
+    "name": "Manel Arrabal",
+    "image": "assets/img/characters/Manel_test.jpg"
+  },
+  {
+    "key": "Misterios",
+    "name": "Persona Misteriosa",
+    "image": "assets/img/characters/Misterios_test.png"
+  },
+  {
+    "key": "RosaCavalle",
+    "name": "Rosa Cavallé",
+    "image": "assets/img/characters/Test.webp"
+  },
+  {
+    "key": "SilviaLlado",
+    "name": "Silvia Lladó",
+    "image": "assets/img/characters/Test.webp"
+  },
+  {
+    "key": "Test",
+    "name": "test name",
+    "image": "assets/img/characters/Test.webp"
+  },
+  {
+    "key": "Test2",
+    "name": "test name 2",
+    "image": "assets/img/characters/Test_Girl.jpg"
+  },
+  {
+    "key": "XaviSala",
+    "name": "Xavi Sala",
+    "image": "assets/img/characters/Xavi_test.jpg"
+  },
+  {
+    "key": "XaviVallejo",
+    "name": "Xavi Vallejo",
+    "image": "assets/img/characters/Vallejo_test.jpg"
+  }
+]

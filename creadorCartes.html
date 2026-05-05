@@ -1,452 +1,565 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor de Cartes - Minimalist</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Reign Cendrassos - Suite de Desarrollo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f9fafb;
-            color: #1f2937;
-            overflow: hidden; /* Prevent full body scroll, we'll scroll sections */
-        }
-
-        /* --- NAVBAR --- */
-        .navbar {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 0.8rem 2rem;
-        }
-        .navbar-brand { font-weight: 600; color: #111827; }
-        
-        /* --- LAYOUT --- */
-        .app-container { display: flex; height: calc(100vh - 65px); }
-        
-        .sidebar {
-            width: 320px;
-            background-color: #ffffff;
-            border-right: 1px solid #e5e7eb;
-            display: flex;
-            flex-direction: column;
-        }
-        .sidebar-header { padding: 20px; border-bottom: 1px solid #f3f4f6; }
-        .card-list {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 12px;
-        }
-
-        .main-editor {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 40px;
-            background-color: #f9fafb;
-        }
-        .editor-content { max-width: 900px; margin: 0 auto; }
-
-        /* --- SIDEBAR ITEMS --- */
-        .card-item {
-            padding: 12px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 4px;
-            font-size: 0.9rem;
-            color: #4b5563;
-            border: 1px solid transparent;
-            display: flex;
-            align-items: center;
-        }
-        .card-item:hover { background-color: #f3f4f6; }
-        .card-item.active {
-            background-color: #eff6ff;
-            color: #2563eb;
-            font-weight: 500;
-        }
-        .card-id-badge {
-            background-color: #e5e7eb;
-            color: #4b5563;
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-right: 10px;
-            font-weight: 600;
-        }
-        .card-item.active .card-id-badge { background-color: #bfdbfe; color: #1d4ed8; }
-
-        /* --- FORM ELEMENTS --- */
-        .form-label {
-            font-weight: 500;
-            color: #6b7280;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.4rem;
-        }
-        .form-control, .form-select {
-            border-radius: 8px;
-            border: 1px solid #d1d5db;
-            padding: 0.6rem 1rem;
-            font-size: 0.95rem;
-            background-color: #ffffff;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .form-control:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #111827;
-            margin-top: 2.5rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        /* --- OPTION PANELS --- */
-        .option-panel {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-        .panel-left { border-top: 4px solid #8b5cf6; }
-        .panel-right { border-top: 4px solid #10b981; }
-        
-        .option-header { font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
-        
-        /* --- BUTTONS --- */
-        .btn-custom { border-radius: 8px; font-weight: 500; padding: 0.5rem 1rem; transition: all 0.2s; }
-        .btn-primary-custom { background-color: #111827; color: white; border: none; }
-        .btn-primary-custom:hover { background-color: #374151; color: white; }
-        .btn-outline-custom { background-color: white; border: 1px solid #d1d5db; color: #374151; }
-        .btn-outline-custom:hover { background-color: #f3f4f6; }
-        .btn-danger-custom { color: #dc2626; background: transparent; border: 1px solid transparent; }
-        .btn-danger-custom:hover { background: #fef2f2; border-color: #fecaca; }
-
-        /* --- STATS GRID --- */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            background: #f9fafb;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px dashed #d1d5db;
-        }
-
-        /* Smooth reveal */
-        #editorForm { animation: fadeIn 0.3s ease-out; }
+        body { background-color: #f4f6f9; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        .wizard-step { display: none; animation: fadeIn 0.4s; }
+        .wizard-step.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        .nav-pills.steps .nav-link { pointer-events: none; color: #6c757d; border-radius: 50rem; margin: 0 5px; }
+        .nav-pills.steps .nav-link.active { background-color: #0d6efd; color: white; box-shadow: 0 4px 10px rgba(13,110,253,0.3); }
+        .nav-pills.steps .nav-link.completed { background-color: #198754; color: white; }
+        
+        .stat-input { width: 70px; text-align: center; }
+        .badge-edu { background-color: #3498db; color: white; }
+        .badge-con { background-color: #e74c3c; color: white; }
+        .badge-din { background-color: #f1c40f; color: black; }
+        .badge-cap { background-color: #2ecc71; color: white; }
+        .selector-area { background: #e9ecef; border-radius: 10px; padding: 20px; }
+        
+        /* Custom Tabs */
+        .nav-tabs .nav-link { font-weight: bold; color: #495057; border-radius: 10px 10px 0 0; }
+        .nav-tabs .nav-link.active { color: #0d6efd; border-bottom: 3px solid #0d6efd; background-color: white;}
     </style>
 </head>
-<body>
+<body class="pb-5">
 
-<nav class="navbar d-flex justify-content-between align-items-center">
-    <div class="navbar-brand">✨ Editor Reigns</div>
-    <div class="d-flex gap-3 align-items-center">
-        <input type="file" id="fileInput" class="form-control form-control-sm" accept=".json" style="max-width: 250px;">
-        <button class="btn btn-custom btn-primary-custom" onclick="downloadJSON()">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="me-1"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-            Exportar JSON
-        </button>
-    </div>
-</nav>
+<div class="container mt-4">
+    <h2 class="text-center mb-4"><i class="bi bi-controller"></i> Suite de Desarrollo - Reign Cendrassos</h2>
 
-<div class="app-container">
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <button class="btn btn-custom btn-outline-custom w-100" onclick="createNewCard()">
-                + Crear Nova Carta
-            </button>
-        </div>
-        <div class="card-list" id="cardList">
-            <div class="text-center text-muted mt-5 p-3" style="font-size: 0.9rem;">
-                Carrega un arxiu JSON per començar o crea una carta nova.
+    <!-- Indicador de Pasos -->
+    <ul class="nav nav-pills steps justify-content-center mb-4" id="stepIndicator">
+        <li class="nav-item"><a class="nav-link active" id="ind-1" href="#"><i class="bi bi-1-circle"></i> Cargar</a></li>
+        <li class="nav-item"><a class="nav-link" id="ind-2" href="#"><i class="bi bi-2-circle"></i> Gestionar</a></li>
+        <li class="nav-item"><a class="nav-link" id="ind-3" href="#"><i class="bi bi-3-circle"></i> Exportar</a></li>
+    </ul>
+
+    <!-- ================= PASO 1: CARGAR ================= -->
+    <div id="step-1" class="wizard-step active">
+        <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+            <div class="card-body text-center p-5">
+                <h4 class="mb-4">Sincronizar Proyecto</h4>
+                <button class="btn btn-primary btn-lg w-100 mb-3 shadow-sm" id="btnDownload" onclick="loadFromAPI()">
+                    <i class="bi bi-cloud-arrow-down-fill fs-4 d-block mb-1"></i> Cargar Cartas y Personajes (API)
+                </button>
+                
+                <hr class="my-4">
+                <p class="text-muted small mb-2">Carga Manual (Pega el JSON correspondiente):</p>
+                <div class="row g-2 mb-2">
+                    <div class="col-6"><textarea id="jsonCardsIO" class="form-control text-muted" rows="2" placeholder="JSON Cartas..."></textarea></div>
+                    <div class="col-6"><textarea id="jsonCharsIO" class="form-control text-muted" rows="2" placeholder="JSON Personajes..."></textarea></div>
+                </div>
+                <button class="btn btn-outline-secondary w-100" onclick="loadManualJSON()">Cargar desde textos</button>
             </div>
         </div>
     </div>
 
-    <div class="main-editor">
-        <div class="editor-content" id="editorForm" style="display: none;">
+    <!-- ================= PASO 2: GESTIONAR ================= -->
+    <div id="step-2" class="wizard-step">
+        
+        <!-- PESTAÑAS (TABS) -->
+        <ul class="nav nav-tabs fs-5 mb-0 border-bottom-0" id="managementTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active px-5 py-3" id="tab-cartas" data-bs-toggle="tab" data-bs-target="#pane-cartas" type="button" role="tab"><i class="bi bi-card-text"></i> Cartas</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-5 py-3" id="tab-personajes" data-bs-toggle="tab" data-bs-target="#pane-personajes" type="button" role="tab"><i class="bi bi-people-fill"></i> Personajes</button>
+            </li>
+        </ul>
+
+        <div class="tab-content bg-white border border-top-0 rounded-bottom p-4 shadow-sm mb-4" id="managementTabsContent">
             
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 id="formTitle" style="font-weight: 600; color: #111827; margin: 0;">Configuració de la Carta</h2>
-                <div>
-                    <button type="button" class="btn btn-custom btn-danger-custom me-2" onclick="deleteCurrentCard()">Eliminar</button>
-                    <button type="button" class="btn btn-custom btn-primary-custom" onclick="saveCard()">Desar Canvis</button>
+            <!-- PANE: CARTAS -->
+            <div class="tab-pane fade show active" id="pane-cartas" role="tabpanel">
+                <div class="selector-area d-flex align-items-end gap-3 flex-wrap mb-4">
+                    <div class="flex-grow-1">
+                        <label class="form-label fw-bold"><i class="bi bi-person-fill"></i> Filtrar por Personaje</label>
+                        <select class="form-select form-select-lg" id="filterChar" onchange="updateCardFilter()"></select>
+                    </div>
+                    <div class="flex-grow-1" style="min-width: 40%;">
+                        <label class="form-label fw-bold"><i class="bi bi-chat-square-text-fill"></i> Seleccionar Carta</label>
+                        <select class="form-select form-select-lg" id="filterCard" onchange="loadSelectedCard()">
+                            <option value="">-- Selecciona una carta para editar --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary btn-lg shadow-sm" onclick="prepareNewCard()">
+                            <i class="bi bi-plus-circle-fill"></i> Crear Carta
+                        </button>
+                    </div>
+                </div>
+
+                <!-- EDITOR DE CARTAS -->
+                <div id="cardEditor" class="card border-primary" style="display: none;">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" id="cardFormTitle">Editor de Carta</h5>
+                        <button type="button" class="btn-close btn-close-white" onclick="document.getElementById('cardEditor').style.display='none'"></button>
+                    </div>
+                    <div class="card-body">
+                        <form id="cardForm" class="needs-validation" novalidate onsubmit="saveCard(event)">
+                            <div class="row g-3 mb-4 border-bottom pb-4">
+                                <div class="col-md-2">
+                                    <label class="form-label fw-bold">ID Carta</label>
+                                    <input type="number" class="form-control bg-light" id="c_id" readonly>
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="form-label fw-bold">Personaje <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="c_char" required></select>
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="form-label fw-bold">Texto principal <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="c_text" rows="2" required></textarea>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label class="form-label text-primary fw-bold"><i class="bi bi-link-45deg"></i> Forzar Previa</label>
+                                    <select class="form-select" id="c_req_card"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label text-primary fw-bold"><i class="bi bi-flag-fill"></i> Requiere Arco</label>
+                                    <select class="form-select flag-select" id="c_req_flag"></select>
+                                </div>
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <div class="form-check form-switch fs-5 pb-1">
+                                        <input class="form-check-input" type="checkbox" id="c_rep">
+                                        <label class="form-check-label fs-6 ms-2">Repetible</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-4">
+                                <!-- IZQUIERDA -->
+                                <div class="col-md-6 border-end pe-4">
+                                    <h5 class="text-danger fw-bold border-bottom pb-2"><i class="bi bi-arrow-left-circle-fill"></i> Swipe Izquierda</h5>
+                                    <input type="text" class="form-control border-danger mb-2" id="c_l_label" required placeholder="Texto de decisión">
+                                    <select class="form-select form-select-sm mb-2" id="c_l_next"></select>
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6"><select class="form-select form-select-sm flag-select" id="c_l_set"></select></div>
+                                        <div class="col-6"><select class="form-select form-select-sm flag-select" id="c_l_rem"></select></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between bg-light p-2 rounded border">
+                                        <div class="text-center"><span class="badge badge-edu">Edu</span><input type="number" class="form-control form-control-sm stat-input mt-1" id="c_l_edu" value="0"></div>
+                                        <div class="text-center"><span class="badge badge-con">Conv</span><input type="number" class="form-control form-control-sm stat-input mt-1" id="c_l_con" value="0"></div>
+                                        <div class="text-center"><span class="badge badge-din">Din</span><input type="number" class="form-control form-control-sm stat-input mt-1" id="c_l_din" value="0"></div>
+                                        <div class="text-center"><span class="badge badge-cap">Cap</span><input type="number" class="form-control form-control-sm stat-input mt-1" id="c_l_cap" value="0"></div>
+                                    </div>
+                                </div>
+                                <!-- DERECHA -->
+                                <div class="col-md-6 ps-4">
+                                    <h5 class="text-success fw-bold border-bottom pb-2">Swipe Derecha <i class="bi bi-arrow-right-circle-fill"></i></h5>
+                                    <input type="text" class="form-control border-success mb-2" id="c_r_label" required placeholder="Texto de decisión">
+                                    <select class="form-select form-select-sm mb-2" id="c_r_next"></select>
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6"><select class="form-select form-select-sm flag-select" id="c_r_set"></select></div>
+                                        <div class="col-6"><select class="form-select form-select-sm flag-select" id="c_r_rem"></select></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between bg-light p-2 rounded border">
+                                        <div class="text-center"><span class="badge badge-edu">Edu</span><input type="number" class="form-control form-control-sm stat-input mt-1" id="c_r_edu" value="0"></div>
+                                        <div class="text-center"><span class="badge badge-con">Conv</span><input type="number" class="form-control form-control-sm stat-input mt-1" id="c_r_con" value="0"></div>
+                                        <div class="text-center"><span class="badge badge-din">Din</span><input type="number" class="form-control form-control-sm stat-input mt-1" id="c_r_din" value="0"></div>
+                                        <div class="text-center"><span class="badge badge-cap">Cap</span><input type="number" class="form-control form-control-sm stat-input mt-1" id="c_r_cap" value="0"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 border-top text-end">
+                                <button type="submit" class="btn btn-primary btn-lg px-5"><i class="bi bi-save"></i> Guardar Carta</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 
-            <form id="cardForm">
-                <div class="section-title mt-0">Dades de la Carta</div>
-                <div class="row g-4">
-                    <div class="col-md-2">
-                        <label class="form-label">ID</label>
-                        <input type="number" class="form-control" id="c_id" required>
+            <!-- PANE: PERSONAJES -->
+            <div class="tab-pane fade" id="pane-personajes" role="tabpanel">
+                <div class="selector-area d-flex align-items-end gap-3 flex-wrap mb-4">
+                    <div class="flex-grow-1" style="min-width: 60%;">
+                        <label class="form-label fw-bold"><i class="bi bi-person-badge"></i> Seleccionar Personaje</label>
+                        <select class="form-select form-select-lg" id="filterPersonaje" onchange="loadSelectedPersonaje()">
+                            <option value="">-- Selecciona un personaje para editar --</option>
+                        </select>
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label">Personatge</label>
-                        <input type="text" class="form-control" id="c_character" placeholder="Ej: RosaCavalle" required>
-                    </div>
-                    <div class="col-md-6 d-flex align-items-end pb-2">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="c_isRepeatable" style="cursor: pointer;">
-                            <label class="form-check-label text-muted ms-2" for="c_isRepeatable">Carta repetible (Torna a sortir al mazo)</label>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label">Text de la carta</label>
-                        <textarea class="form-control" id="c_text" rows="2" placeholder="Què diu el personatge?" required></textarea>
+                    <div>
+                        <button class="btn btn-primary btn-lg shadow-sm" onclick="prepareNewPersonaje()">
+                            <i class="bi bi-person-plus-fill"></i> Crear Personaje
+                        </button>
                     </div>
                 </div>
 
-                <div class="section-title">Condicions d'Aparició</div>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <label class="form-label">Requereix Carta ID prèvia</label>
-                        <input type="number" class="form-control" id="c_requiresCardId" placeholder="Buit si no en cal">
+                <!-- EDITOR DE PERSONAJES -->
+                <div id="charEditor" class="card border-primary" style="display: none;">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" id="charFormTitle">Editor de Personaje</h5>
+                        <button type="button" class="btn-close btn-close-white" onclick="document.getElementById('charEditor').style.display='none'"></button>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Requereix Bandera (Flag) Activa</label>
-                        <input type="text" class="form-control" id="c_requiresFlag" placeholder="Ej: andrea_substituta">
-                    </div>
-                </div>
-
-                <div class="section-title">Opcions de Resposta</div>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="option-panel panel-left">
-                            <div class="option-header" style="color: #6d28d9;">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                                Lliscar a l'Esquerra
-                            </div>
-                            
-                            <label class="form-label">Text Resposta</label>
-                            <input type="text" class="form-control mb-3" id="l_label" required>
-                            
-                            <div class="row g-2 mb-3">
-                                <div class="col-6">
-                                    <label class="form-label text-success">Activar Flag</label>
-                                    <input type="text" class="form-control form-control-sm" id="l_setFlag" placeholder="+ Flag">
+                    <div class="card-body">
+                        <form id="charForm" class="needs-validation" novalidate onsubmit="savePersonaje(event)">
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">ID Interno (Key) <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="p_key" required>
                                 </div>
-                                <div class="col-6">
-                                    <label class="form-label text-danger">Desactivar Flag</label>
-                                    <input type="text" class="form-control form-control-sm" id="l_removeFlag" placeholder="- Flag">
+                                <div class="col-md-8">
+                                    <label class="form-label fw-bold">Nombre Visible <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="p_name" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Ruta de la Imagen <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="p_image" required>
                                 </div>
                             </div>
-
-                            <label class="form-label">Forçar Següent Carta ID</label>
-                            <input type="number" class="form-control mb-4" id="l_nextCardId" placeholder="Opcional">
-
-                            <label class="form-label">Efectes (Stats)</label>
-                            <div class="stats-grid">
-                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Educació</label><input type="number" class="form-control form-control-sm text-center" id="l_educacio"></div>
-                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Capacitats</label><input type="number" class="form-control form-control-sm text-center" id="l_capacitats"></div>
-                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Convivència</label><input type="number" class="form-control form-control-sm text-center" id="l_convivencia"></div>
-                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Diners</label><input type="number" class="form-control form-control-sm text-center" id="l_diners"></div>
+                            <div class="pt-3 border-top text-end">
+                                <button type="submit" class="btn btn-primary btn-lg px-5"><i class="bi bi-save"></i> Guardar Personaje</button>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="option-panel panel-right">
-                            <div class="option-header" style="color: #047857;">
-                                Lliscar a la Dreta
-                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </div>
-                            
-                            <label class="form-label">Text Resposta</label>
-                            <input type="text" class="form-control mb-3" id="r_label" required>
-                            
-                            <div class="row g-2 mb-3">
-                                <div class="col-6">
-                                    <label class="form-label text-success">Activar Flag</label>
-                                    <input type="text" class="form-control form-control-sm" id="r_setFlag" placeholder="+ Flag">
-                                </div>
-                                <div class="col-6">
-                                    <label class="form-label text-danger">Desactivar Flag</label>
-                                    <input type="text" class="form-control form-control-sm" id="r_removeFlag" placeholder="- Flag">
-                                </div>
-                            </div>
-
-                            <label class="form-label">Forçar Següent Carta ID</label>
-                            <input type="number" class="form-control mb-4" id="r_nextCardId" placeholder="Opcional">
-
-                            <label class="form-label">Efectes (Stats)</label>
-                            <div class="stats-grid">
-                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Educació</label><input type="number" class="form-control form-control-sm text-center" id="r_educacio"></div>
-                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Capacitats</label><input type="number" class="form-control form-control-sm text-center" id="r_capacitats"></div>
-                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Convivència</label><input type="number" class="form-control form-control-sm text-center" id="r_convivencia"></div>
-                                <div><label class="form-label mb-1" style="font-size:0.65rem;">Diners</label><input type="number" class="form-control form-control-sm text-center" id="r_diners"></div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </form>
-            <br><br> </div>
+            </div>
+
+        </div> <!-- Fin Tab Content -->
+
+        <div class="text-end">
+            <button class="btn btn-dark btn-lg px-5" onclick="goToStep(3)">Siguiente: Exportar Base de Datos <i class="bi bi-arrow-right"></i></button>
+        </div>
     </div>
+
+    <!-- ================= PASO 3: EXPORTAR ================= -->
+    <div id="step-3" class="wizard-step">
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow border-0 h-100">
+                    <div class="card-body text-center p-5">
+                        <i class="bi bi-card-text text-primary" style="font-size: 3rem;"></i>
+                        <h4 class="mt-3">Base de Cartas</h4>
+                        <p class="text-muted"><strong id="finalCountCards" class="fs-4 text-dark">0</strong> cartas listas.</p>
+                        <button class="btn btn-primary w-100 mb-2" onclick="exportJSON('cards')"><i class="bi bi-clipboard"></i> Copiar Cartas</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow border-0 h-100">
+                    <div class="card-body text-center p-5">
+                        <i class="bi bi-people-fill text-success" style="font-size: 3rem;"></i>
+                        <h4 class="mt-3">Base de Personajes</h4>
+                        <p class="text-muted"><strong id="finalCountChars" class="fs-4 text-dark">0</strong> personajes listos.</p>
+                        <button class="btn btn-success w-100 mb-2" onclick="exportJSON('chars')"><i class="bi bi-clipboard"></i> Copiar Personajes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <button class="btn btn-outline-secondary px-4" onclick="goToStep(2)"><i class="bi bi-arrow-left"></i> Volver al Editor</button>
+        </div>
+    </div>
+
 </div>
 
+<!-- Funcionalidad JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    let dbCartas = [];
-    let cartaActualIndex = -1;
+    let cards = [];
+    let personajes = [];
+    let uniqueFlags = new Set();
+    
+    let isEditingCard = false; let editingCardIndex = -1;
+    let isEditingChar = false; let editingCharIndex = -1;
 
-    document.getElementById('fileInput').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                dbCartas = JSON.parse(e.target.result);
-                renderLlista();
-            } catch (err) {
-                alert("Error al llegir el JSON.");
+    // ----- CREAR BANDERAS AL VUELO -----
+    document.addEventListener('change', function(e) {
+        if (e.target && e.target.classList.contains('flag-select')) {
+            if (e.target.value === "_NEW_") {
+                let newFlag = prompt("Nuevo arco o bandera (ej: xavi_feliz):");
+                if (newFlag && newFlag.trim() !== "") {
+                    newFlag = newFlag.trim().replace(/\s+/g, '_').toLowerCase();
+                    uniqueFlags.add(newFlag);
+                    updateFlagSelects();
+                    e.target.value = newFlag;
+                } else {
+                    e.target.value = "";
+                }
             }
-        };
-        reader.readAsText(file);
+        }
     });
 
-    function renderLlista() {
-        const llista = document.getElementById('cardList');
-        llista.innerHTML = '';
+    // ----- NAVEGACIÓN -----
+    function goToStep(step) {
+        document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
+        document.getElementById(`step-${step}`).classList.add('active');
         
-        dbCartas.sort((a, b) => a.id - b.id);
+        document.querySelectorAll('.nav-pills.steps .nav-link').forEach((el, index) => {
+            el.classList.remove('active', 'completed');
+            if(index + 1 < step) el.classList.add('completed');
+            else if(index + 1 === step) el.classList.add('active');
+        });
 
-        dbCartas.forEach((carta, index) => {
-            const div = document.createElement('div');
-            div.className = `card-item ${index === cartaActualIndex ? 'active' : ''}`;
-            div.innerHTML = `<span class="card-id-badge">${carta.id}</span> <span>${carta.character}</span>`;
-            div.onclick = () => loadCardIntoForm(index);
-            llista.appendChild(div);
+        if (step === 3) {
+            document.getElementById('finalCountCards').innerText = cards.length;
+            document.getElementById('finalCountChars').innerText = personajes.length;
+        }
+    }
+
+    // ----- PASO 1: CARGA DE DATOS -----
+    async function loadFromAPI() {
+        const btn = document.getElementById('btnDownload');
+        try {
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Conectando...`;
+            btn.disabled = true;
+            const [cRes, pRes] = await Promise.all([
+                fetch('https://reigns-api.onrender.com/cartes'),
+                fetch('https://reigns-api.onrender.com/persones')
+            ]);
+            if (!cRes.ok || !pRes.ok) throw new Error("Error API");
+            cards = await cRes.json();
+            personajes = await pRes.json();
+            onDataLoaded();
+        } catch (error) {
+            alert("Error al conectar con la API.");
+            btn.innerHTML = `<i class="bi bi-cloud-arrow-down-fill"></i> Reintentar`;
+            btn.disabled = false;
+        }
+    }
+
+    function loadManualJSON() {
+        try {
+            const cTxt = document.getElementById('jsonCardsIO').value;
+            const pTxt = document.getElementById('jsonCharsIO').value;
+            if(cTxt) cards = JSON.parse(cTxt);
+            if(pTxt) personajes = JSON.parse(pTxt);
+            if(!cards.length && !personajes.length) return alert("Pega al menos un JSON.");
+            onDataLoaded();
+        } catch(e) { alert("Error: JSON inválido."); }
+    }
+
+    function onDataLoaded() {
+        populateCharacters();
+        processAutoCompletes();
+        updateCardFilter();
+        updatePersonajeDropdown();
+        goToStep(2);
+    }
+
+    // ----- ACTUALIZADORES GLOBALES -----
+    function populateCharacters() {
+        personajes.sort((a, b) => a.name.localeCompare(b.name));
+        const formOptions = `<option value="">-- Personaje --</option>` + personajes.map(p => `<option value="${p.key}">${p.name} (${p.key})</option>`).join('');
+        const filterOptions = `<option value="">-- Todos --</option>` + personajes.map(p => `<option value="${p.key}">${p.name}</option>`).join('');
+        
+        document.getElementById('c_char').innerHTML = formOptions;
+        document.getElementById('filterChar').innerHTML = filterOptions;
+    }
+
+    function processAutoCompletes() {
+        uniqueFlags.clear();
+        cards.forEach(c => {
+            if (c.requiresFlag) uniqueFlags.add(c.requiresFlag);
+            ['left', 'right'].forEach(s => {
+                if (c[s]?.setFlag) uniqueFlags.add(c[s].setFlag);
+                if (c[s]?.removeFlag) uniqueFlags.add(c[s].removeFlag);
+            });
+        });
+
+        const cardOpts = `<option value="">-- Ninguna --</option>` + cards.sort((a,b)=>a.id-b.id).map(c => {
+            const pName = personajes.find(p => p.key === c.character)?.name || c.character;
+            return `<option value="${c.id}">#${c.id} - ${pName} (${c.text.substring(0,25)}...)</option>`;
+        }).join('');
+        
+        document.getElementById('c_req_card').innerHTML = cardOpts;
+        document.getElementById('c_l_next').innerHTML = cardOpts;
+        document.getElementById('c_r_next').innerHTML = cardOpts;
+        updateFlagSelects();
+    }
+
+    function updateFlagSelects() {
+        const opts = `<option value="">-- Ninguno --</option>` + [...uniqueFlags].sort().map(f => `<option value="${f}">${f}</option>`).join('') + `<option value="_NEW_" class="fw-bold text-primary">+ ✨ Crear nuevo...</option>`;
+        document.querySelectorAll('.flag-select').forEach(sel => {
+            const val = sel.value; sel.innerHTML = opts;
+            if ([...uniqueFlags].includes(val)) sel.value = val; else sel.value = "";
         });
     }
 
-    function loadCardIntoForm(index) {
-        cartaActualIndex = index;
-        const c = dbCartas[index];
-        
-        document.getElementById('editorForm').style.display = 'block';
+    // =========================================================
+    //                    LÓGICA DE CARTAS
+    // =========================================================
+    function updateCardFilter() {
+        const char = document.getElementById('filterChar').value;
+        let filtered = char ? cards.filter(c => c.character === char) : cards;
+        document.getElementById('filterCard').innerHTML = `<option value="">-- Selecciona una carta --</option>` + 
+            filtered.sort((a,b)=>a.id-b.id).map(c => `<option value="${c.id}">[#${c.id}] ${c.text.substring(0, 50)}...</option>`).join('');
+        document.getElementById('cardEditor').style.display = 'none';
+    }
 
-        const val = (v) => v !== null && v !== undefined ? v : '';
+    function loadSelectedCard() {
+        const id = parseInt(document.getElementById('filterCard').value);
+        if (!id) return;
+        editCard(cards.findIndex(c => c.id === id));
+    }
 
-        // Basico
+    function prepareNewCard() {
+        isEditingCard = false; editingCardIndex = -1;
+        document.getElementById('cardForm').reset();
+        document.getElementById('cardForm').classList.remove('was-validated');
+        document.getElementById('c_id').value = (cards.filter(c=>c.id<1000).length > 0 ? Math.max(...cards.filter(c=>c.id<1000).map(c=>c.id)) : 0) + 1;
+        if(document.getElementById('filterChar').value) document.getElementById('c_char').value = document.getElementById('filterChar').value;
+        document.getElementById('cardEditor').style.display = 'block';
+        document.getElementById('cardFormTitle').innerHTML = `Creando Nueva Carta`;
+    }
+
+    function editCard(index) {
+        isEditingCard = true; editingCardIndex = index;
+        const c = cards[index];
+        document.getElementById('cardForm').classList.remove('was-validated');
         document.getElementById('c_id').value = c.id;
-        document.getElementById('c_character').value = c.character;
-        document.getElementById('c_text').value = c.text;
-        document.getElementById('c_isRepeatable').checked = c.isRepeatable;
-        document.getElementById('c_requiresCardId').value = val(c.requiresCardId);
-        document.getElementById('c_requiresFlag').value = val(c.requiresFlag);
+        document.getElementById('c_char').value = c.character || '';
+        document.getElementById('c_text').value = c.text || '';
+        document.getElementById('c_rep').checked = c.isRepeatable || false;
+        document.getElementById('c_req_card').value = c.requiresCardId || '';
+        document.getElementById('c_req_flag').value = c.requiresFlag || '';
 
-        // Izquierda
-        document.getElementById('l_label').value = c.left.label;
-        document.getElementById('l_setFlag').value = val(c.left.setFlag);
-        document.getElementById('l_removeFlag').value = val(c.left.removeFlag);
-        document.getElementById('l_nextCardId').value = val(c.left.nextCardId);
-        document.getElementById('l_educacio').value = c.left.effects.educacio;
-        document.getElementById('l_capacitats').value = c.left.effects.capacitatsClau;
-        document.getElementById('l_convivencia').value = c.left.effects.convivencia;
-        document.getElementById('l_diners').value = c.left.effects.diners;
-
-        // Derecha
-        document.getElementById('r_label').value = c.right.label;
-        document.getElementById('r_setFlag').value = val(c.right.setFlag);
-        document.getElementById('r_removeFlag').value = val(c.right.removeFlag);
-        document.getElementById('r_nextCardId').value = val(c.right.nextCardId);
-        document.getElementById('r_educacio').value = c.right.effects.educacio;
-        document.getElementById('r_capacitats').value = c.right.effects.capacitatsClau;
-        document.getElementById('r_convivencia').value = c.right.effects.convivencia;
-        document.getElementById('r_diners').value = c.right.effects.diners;
-
-        renderLlista(); 
-    }
-
-    function createNewCard() {
-        const nouId = dbCartas.length > 0 ? Math.max(...dbCartas.map(c => c.id)) + 1 : 1;
-        
-        const novaCarta = {
-            id: nouId, character: "NouPersonatge", text: "", isRepeatable: true,
-            requiresCardId: null, requiresFlag: null,
-            left: { label: "", nextCardId: null, setFlag: null, removeFlag: null, effects: { educacio: 0, convivencia: 0, diners: 0, capacitatsClau: 0 } },
-            right: { label: "", nextCardId: null, setFlag: null, removeFlag: null, effects: { educacio: 0, convivencia: 0, diners: 0, capacitatsClau: 0 } }
-        };
-
-        dbCartas.push(novaCarta);
-        loadCardIntoForm(dbCartas.length - 1);
-        
-        // Scroll list to bottom
-        setTimeout(() => {
-            const list = document.getElementById('cardList');
-            list.scrollTop = list.scrollHeight;
-        }, 50);
-    }
-
-    function saveCard() {
-        if (cartaActualIndex === -1) return;
-
-        const getStr = (id) => { const v = document.getElementById(id).value.trim(); return v === '' ? null : v; };
-        const getInt = (id) => { const v = document.getElementById(id).value; return v === '' ? null : parseInt(v); };
-        const getEffect = (id) => { const v = document.getElementById(id).value; return v === '' ? 0 : parseInt(v); };
-
-        dbCartas[cartaActualIndex] = {
-            id: parseInt(document.getElementById('c_id').value),
-            character: document.getElementById('c_character').value,
-            text: document.getElementById('c_text').value,
-            isRepeatable: document.getElementById('c_isRepeatable').checked,
-            requiresCardId: getInt('c_requiresCardId'),
-            requiresFlag: getStr('c_requiresFlag'),
-            left: {
-                label: document.getElementById('l_label').value, nextCardId: getInt('l_nextCardId'), setFlag: getStr('l_setFlag'), removeFlag: getStr('l_removeFlag'),
-                effects: { educacio: getEffect('l_educacio'), convivencia: getEffect('l_convivencia'), diners: getEffect('l_diners'), capacitatsClau: getEffect('l_capacitats') }
-            },
-            right: {
-                label: document.getElementById('r_label').value, nextCardId: getInt('r_nextCardId'), setFlag: getStr('r_setFlag'), removeFlag: getStr('r_removeFlag'),
-                effects: { educacio: getEffect('r_educacio'), convivencia: getEffect('r_convivencia'), diners: getEffect('r_diners'), capacitatsClau: getEffect('r_capacitats') }
+        const fill = (obj, pfx) => {
+            if(!obj) return;
+            document.getElementById(`c_${pfx}_label`).value = obj.label || '';
+            document.getElementById(`c_${pfx}_next`).value = obj.nextCardId || '';
+            document.getElementById(`c_${pfx}_set`).value = obj.setFlag || '';
+            document.getElementById(`c_${pfx}_rem`).value = obj.removeFlag || '';
+            if(obj.effects) {
+                document.getElementById(`c_${pfx}_edu`).value = obj.effects.educacio || 0;
+                document.getElementById(`c_${pfx}_con`).value = obj.effects.convivencia || 0;
+                document.getElementById(`c_${pfx}_din`).value = obj.effects.diners || 0;
+                document.getElementById(`c_${pfx}_cap`).value = obj.effects.capacitatsClau || 0;
             }
         };
-
-        renderLlista();
-        
-        const btn = document.querySelector('.btn-primary-custom');
-        const textOriginal = btn.innerHTML;
-        btn.innerHTML = "✅ Desat!";
-        setTimeout(() => btn.innerHTML = textOriginal, 1000);
+        fill(c.left, 'l'); fill(c.right, 'r');
+        document.getElementById('cardEditor').style.display = 'block';
+        document.getElementById('cardFormTitle').innerHTML = `Editando Carta #${c.id}`;
     }
 
-    function deleteCurrentCard() {
-        if (cartaActualIndex === -1) return;
-        if (confirm("Segur que vols eliminar aquesta carta?")) {
-            dbCartas.splice(cartaActualIndex, 1);
-            cartaActualIndex = -1;
-            document.getElementById('editorForm').style.display = 'none';
-            renderLlista();
+    function saveCard(e) {
+        e.preventDefault(); const form = document.getElementById('cardForm');
+        if (!form.checkValidity()) return form.classList.add('was-validated');
+        
+        const getI = id => parseInt(document.getElementById(id).value) || null;
+        const getS = id => parseInt(document.getElementById(id).value) || 0;
+        const getT = id => { const v = document.getElementById(id).value; return (v && v!=="_NEW_") ? v.trim() : null; };
+
+        const newC = {
+            id: parseInt(document.getElementById('c_id').value),
+            character: document.getElementById('c_char').value,
+            text: document.getElementById('c_text').value.trim(),
+            isRepeatable: document.getElementById('c_rep').checked,
+        };
+        const reqId = getI('c_req_card'); if(reqId) newC.requiresCardId = reqId;
+        const reqFg = getT('c_req_flag'); if(reqFg) newC.requiresFlag = reqFg;
+
+        const buildSide = pfx => ({
+            label: getT(`c_${pfx}_label`) || "...",
+            nextCardId: getI(`c_${pfx}_next`),
+            setFlag: getT(`c_${pfx}_set`),
+            removeFlag: getT(`c_${pfx}_rem`),
+            effects: { educacio: getS(`c_${pfx}_edu`), convivencia: getS(`c_${pfx}_con`), diners: getS(`c_${pfx}_din`), capacitatsClau: getS(`c_${pfx}_cap`) }
+        });
+        newC.left = buildSide('l'); newC.right = buildSide('r');
+        ['left', 'right'].forEach(s => {
+            if(newC[s].nextCardId===null) newC[s].nextCardId=null;
+            if(!newC[s].setFlag) delete newC[s].setFlag;
+            if(!newC[s].removeFlag) delete newC[s].removeFlag;
+        });
+
+        if (isEditingCard) {
+            if(cards[editingCardIndex]._id) newC._id = cards[editingCardIndex]._id;
+            if(cards[editingCardIndex].isTutorial) newC.isTutorial = true;
+            cards[editingCardIndex] = newC;
+        } else cards.push(newC);
+
+        document.getElementById('cardEditor').style.display = 'none';
+        processAutoCompletes();
+        
+        const currentFilter = document.getElementById('filterChar').value;
+        if(currentFilter) document.getElementById('filterChar').value = currentFilter;
+        updateCardFilter();
+        alert("✅ Carta guardada.");
+    }
+
+    // =========================================================
+    //                  LÓGICA DE PERSONAJES
+    // =========================================================
+    function updatePersonajeDropdown() {
+        personajes.sort((a,b)=>a.name.localeCompare(b.name));
+        document.getElementById('filterPersonaje').innerHTML = `<option value="">-- Selecciona un personaje --</option>` + 
+            personajes.map((p,i) => `<option value="${i}">${p.name} (${p.key})</option>`).join('');
+        document.getElementById('charEditor').style.display = 'none';
+    }
+
+    function loadSelectedPersonaje() {
+        const i = document.getElementById('filterPersonaje').value;
+        if(i !== "") editPersonaje(parseInt(i));
+    }
+
+    function prepareNewPersonaje() {
+        isEditingChar = false; editingCharIndex = -1;
+        document.getElementById('charForm').reset();
+        document.getElementById('charForm').classList.remove('was-validated');
+        document.getElementById('p_image').value = "assets/img/characters/Test.webp";
+        document.getElementById('filterPersonaje').value = "";
+        document.getElementById('charEditor').style.display = 'block';
+        document.getElementById('charFormTitle').innerHTML = `Creando Nuevo Personaje`;
+    }
+
+    function editPersonaje(i) {
+        isEditingChar = true; editingCharIndex = i;
+        const p = personajes[i];
+        document.getElementById('charForm').classList.remove('was-validated');
+        document.getElementById('p_key').value = p.key;
+        document.getElementById('p_name').value = p.name;
+        document.getElementById('p_image').value = p.image;
+        document.getElementById('charEditor').style.display = 'block';
+        document.getElementById('charFormTitle').innerHTML = `Editando a: ${p.name}`;
+    }
+
+    function savePersonaje(e) {
+        e.preventDefault(); const form = document.getElementById('charForm');
+        if (!form.checkValidity()) return form.classList.add('was-validated');
+        
+        const nKey = document.getElementById('p_key').value.trim();
+        const nName = document.getElementById('p_name').value.trim();
+        const nImg = document.getElementById('p_image').value.trim();
+
+        if (!isEditingChar && personajes.some(p => p.key.toLowerCase() === nKey.toLowerCase())) {
+            return alert(`Error: La Key "${nKey}" ya existe.`);
         }
+
+        const newP = { key: nKey, name: nName, image: nImg };
+
+        if (isEditingChar) {
+            const oldKey = personajes[editingCharIndex].key;
+            if(personajes[editingCharIndex]._id) newP._id = personajes[editingCharIndex]._id;
+            personajes[editingCharIndex] = newP;
+            
+            // CASCADE UPDATE: Actualiza la key en las cartas automáticamente si la cambiaron
+            if (oldKey !== nKey) {
+                cards.forEach(c => { if(c.character === oldKey) c.character = nKey; });
+                processAutoCompletes();
+                alert(`⚠️ Se ha detectado un cambio de Key. Se han actualizado las cartas que usaban a "${oldKey}" para que usen "${nKey}".`);
+            }
+        } else personajes.push(newP);
+
+        document.getElementById('charEditor').style.display = 'none';
+        updatePersonajeDropdown();
+        populateCharacters(); // Actualizar listados del lado de Cartas
+        alert("✅ Personaje guardado.");
     }
 
-    function downloadJSON() {
-        if (dbCartas.length === 0) return alert("No hi ha dades per exportar.");
-        
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbCartas, null, 2));
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", "cartes.json");
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
+    // ----- PASO 3: EXPORTACIÓN -----
+    function exportJSON(type) {
+        const data = type === 'cards' ? cards : personajes;
+        if(data.length === 0) return alert("No hay datos para exportar.");
+        navigator.clipboard.writeText(JSON.stringify(data, null, 2)).then(() => {
+            alert(`✅ JSON de ${type === 'cards' ? 'Cartas' : 'Personajes'} copiado al portapapeles.`);
+        });
     }
 </script>
 </body>
