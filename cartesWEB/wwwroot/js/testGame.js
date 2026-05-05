@@ -301,6 +301,25 @@ hammer.on('panend', (e) => {
             updateStats();
         }
 
+        const textsMort = {
+            capacitatsClau: {
+                0:   { text: "La teva creació s'ha enfonsat. Les capacitats clau han desaparegut del centre. Has fallat com a directora.", nom: "Fi de les Capacitats Clau" },
+                100: { text: "Un inspector ha aparegut a la porta. Aquesta avaluació extra és il·legal, diu mentre et segella l'expedient.", nom: "Excés de Capacitats Clau" }
+            },
+            educacio: {
+                0:   { text: "Les famílies han retirat els fills. El centre ha tancat per resolució administrativa. Mai ningú no sabrà el teu nom.", nom: "Col·lapse Educatiu" },
+                100: { text: "Els alumnes han col·lapsat. Una manifestació davant l'escola ha acabat a les notícies. T'han forçat a dimitir.", nom: "Excés d'Educació" }
+            },
+            convivencia: {
+                0:   { text: "Una baralla ha acabat amb tres alumnes a urgències. Els Mossos han desallotjat el centre. Fins aquí has arribat.", nom: "Ruptura de la Convivència" },
+                100: { text: "Ningú no fa res, tots xerra que xerra. Ja no hi ha exàmens. La inspecció diu que això ja no és una escola.", nom: "Excés de Convivència" }
+            },
+            diners: {
+                0:   { text: "No queden fons ni per pagar la llum. Els alumnes han trobat el pany canviat i un paper: 'Tancat per deutes'.", nom: "Bancarrota" },
+                100: { text: "La fiscalia investiga malversació. Et porten en cotxe patrulla mentre els alumnes t'enregistren pel mòbil.", nom: "Investigació per Malversació" }
+            }
+        };
+
         let hasMuerto = false;
         let textoMuerte = "";
         let imgMuerte = "";
@@ -310,15 +329,19 @@ hammer.on('panend', (e) => {
             for (const stat in stats) {
                 if (stats[stat] <= 0) {
                     hasMuerto = true;
-                    textoMuerte = `Has fracassat. La teva capacitat de ${stat} ha arribat a 0.`;
+                    const info = textsMort[stat]?.[0] || { text: `Has fracassat. La ${stat} ha arribat a 0.`, nom: `Mort per manca de ${stat}` };
+                    textoMuerte = info.text;
+                    nomMuerte = info.nom;
                     imgMuerte = `/assets/img/deaths/muerte_${stat}_0.png`;
-                    nomMuerte = `Mort per manca de ${stat}`;
+                    localStorage.setItem(`logro_mort_${stat}_0`, '1');
                     break;
                 } else if (stats[stat] >= 100) {
                     hasMuerto = true;
-                    textoMuerte = `Has fracassat. La teva capacitat de ${stat} ha arribat a 100.`;
+                    const info = textsMort[stat]?.[100] || { text: `Has fracassat. La ${stat} ha arribat a 100.`, nom: `Mort per excés de ${stat}` };
+                    textoMuerte = info.text;
+                    nomMuerte = info.nom;
                     imgMuerte = `/assets/img/deaths/muerte_${stat}_100.png`;
-                    nomMuerte = `Mort per excés de ${stat}`;
+                    localStorage.setItem(`logro_mort_${stat}_100`, '1');
                     break;
                 }
             }

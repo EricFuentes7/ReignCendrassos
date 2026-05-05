@@ -12,6 +12,147 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="/css/inicio.css" asp-append-version="true">
+    <style>
+        /* --- BOTÓ SECUNDARI D'ACCIÓ --- */
+        .action-button.secondary-action {
+            background-color: #a89a85;
+            color: #3b302a;
+            border: none;
+            padding: 15px 20px;
+            font-size: 16px;
+            border-radius: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            width: 100%;
+            text-align: center;
+            font-family: 'OCR-A', sans-serif;
+        }
+        .action-button.secondary-action:active { background-color: #978870; }
+
+        /* --- POPUP OVERLAY --- */
+        #popup-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        #popup-overlay.visible { display: flex; }
+
+        #popup-box {
+            background: #a89a85;
+            border-radius: 2px;
+            width: 88%;
+            max-width: 340px;
+            max-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 20px 16px 16px;
+        }
+
+        #popup-close {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            color: #3b302a;
+            cursor: pointer;
+            font-family: 'OCR-A', sans-serif;
+        }
+
+        #popup-content {
+            overflow-y: auto;
+        }
+        #popup-content::-webkit-scrollbar { width: 4px; }
+        #popup-content::-webkit-scrollbar-thumb { background: #6d6457; }
+
+        /* --- CRÈDITS DINS POPUP --- */
+        .popup-title {
+            font-size: 13px;
+            color: #3b302a;
+            text-align: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #6d6457;
+            padding-bottom: 5px;
+            letter-spacing: 2px;
+            font-family: 'OCR-A', sans-serif;
+        }
+        .credits-list { display: flex; flex-direction: column; gap: 12px; }
+        .credit-item { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .credit-item .name { font-size: 13px; color: #241404; margin-bottom: 2px; font-family: 'OCR-A', sans-serif; }
+        .credit-item .role { font-size: 10px; color: #5a4d3f; text-transform: uppercase; font-family: 'OCR-A', sans-serif; }
+
+        /* --- LOGROS --- */
+        .logros-section-title {
+            font-size: 10px;
+            color: #5a4d3f;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 12px 0 6px;
+            font-family: 'OCR-A', sans-serif;
+        }
+        .logros-section-title:first-of-type { margin-top: 0; }
+
+        .logro-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            margin-bottom: 5px;
+            border-radius: 2px;
+            background: #c4b49a;
+        }
+        .logro-item.blocat {
+            background: #8a7d6b;
+        }
+        .logro-icon-wrap {
+            position: relative;
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+        }
+        .logro-icon-wrap img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+            display: block;
+        }
+        .logro-item.blocat .logro-icon-wrap img {
+            filter: grayscale(100%) brightness(0.5);
+        }
+        .logro-lock-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .logro-item.blocat .logro-lock-overlay {
+            display: flex;
+        }
+        .logro-texts { display: flex; flex-direction: column; }
+        .logro-name {
+            font-size: 11px;
+            color: #100800;
+            font-family: 'OCR-A', sans-serif;
+        }
+        .logro-desc {
+            font-size: 9px;
+            color: #2a1f10;
+            font-family: 'OCR-A', sans-serif;
+            margin-top: 2px;
+        }
+        .logro-item.blocat .logro-name { color: #2a2018; }
+        .logro-item.blocat .logro-desc { color: #3a2f20; }
+    </style>
 </head>
 <body>
 
@@ -27,24 +168,21 @@
                     <button class="action-button primary" onclick="irAlJuego()">
                         HISTORIA
                     </button>
-                    
-                    <div class="credits-container">
-                        <h3 class="credits-title">CRÉDITS</h3>
-                        
-                        <div class="credits-list">
-                            <div class="credit-item">
-                                <span class="name">ERIC FUENTES</span>
-                                <span class="role">Programador, Dissenyador e Ideador</span>
-                            </div>
-
-                            <div class="credit-item">
-                                <span class="name">RUBÉN ARÍN</span>
-                                <span class="role">Ideador de Cartes</span>
-                            </div>
-
-                            </div>
-                    </div>
+                    <button class="action-button secondary-action" onclick="obrirPopup('credits')">
+                        CRÈDITS
+                    </button>
+                    <button class="action-button secondary-action" onclick="obrirPopup('logros')">
+                        LOGROS
+                    </button>
                 </div>
+
+            <!-- POPUP OVERLAY -->
+            <div id="popup-overlay" onclick="tancarPopup()">
+                <div id="popup-box" onclick="event.stopPropagation()">
+                    <button id="popup-close" onclick="tancarPopup()">✕</button>
+                    <div id="popup-content"></div>
+                </div>
+            </div>
             </div>
 
             <div id="bottom-bar">
@@ -55,44 +193,89 @@
         </section>
     </main>
 <script>
-    function irAlJuego() {
-        // 1. Creamos un div negro que cubra toda la pantalla
-        const overlay = document.createElement('div');
-        overlay.style.position = 'fixed';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100vw';
-        overlay.style.height = '100vh';
-        overlay.style.backgroundColor = '#000000'; // Fondo negro
-        overlay.style.zIndex = '9999';
-        overlay.style.opacity = '0'; // Empieza transparente
-        overlay.style.transition = 'opacity 0.8s ease-in-out'; // Tarda 0.8s en ponerse negro
-        overlay.style.pointerEvents = 'none';
-        
-        document.body.appendChild(overlay);
-
-        // 2. Un micro-segundo después, le decimos que se ponga opaco (inicia la animación)
-        setTimeout(() => {
-            overlay.style.opacity = '1';
-        }, 10);
-
-        // 3. Cuando termina la animación negra (0.8s), cambiamos de página
-        setTimeout(() => {
-            location.href = '/Cartes';
-        }, 800);
-    }
-</script>
-<script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Buscamos el valor guardado en la memoria del navegador
         const recordGuardado = localStorage.getItem('record_semanas') || 0;
-        
-        // Actualizamos el texto del subtítulo
         const subtitle = document.getElementById("subtitle-text");
-        if (subtitle) {
-            subtitle.textContent = recordGuardado + " setmanes al poder.";
-        }
+        if (subtitle) subtitle.textContent = recordGuardado + " setmanes al poder.";
     });
+
+    function irAlJuego() {
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;z-index:9999;opacity:0;transition:opacity 0.8s ease-in-out;pointer-events:none';
+        document.body.appendChild(overlay);
+        setTimeout(() => { overlay.style.opacity = '1'; }, 10);
+        setTimeout(() => { location.href = '/Cartes'; }, 800);
+    }
+
+    // --- LOGROS ---
+    const LOGROS = {
+        morts: [
+            { id: "logro_mort_capacitatsClau_0",   img: "/assets/img/deaths/muerte_educacio_0.png", nom: "Fi de les Capacitats Clau",    desc: "Has descobert la mort per manca de Capacitats Clau." },
+            { id: "logro_mort_capacitatsClau_100", img: "/assets/img/deaths/muerte_educacio_0.png", nom: "Excés de Capacitats Clau",     desc: "Has descobert la mort per excés de Capacitats Clau." },
+            { id: "logro_mort_educacio_0",         img: "/assets/img/deaths/muerte_educacio_0.png", nom: "Col·lapse Educatiu",           desc: "Has descobert la mort per manca d'Educació." },
+            { id: "logro_mort_educacio_100",       img: "/assets/img/deaths/muerte_educacio_0.png", nom: "Excés d'Educació",             desc: "Has descobert la mort per excés d'Educació." },
+            { id: "logro_mort_convivencia_0",      img: "/assets/img/deaths/muerte_educacio_0.png", nom: "Ruptura de la Convivència",    desc: "Has descobert la mort per manca de Convivència." },
+            { id: "logro_mort_convivencia_100",    img: "/assets/img/deaths/muerte_educacio_0.png", nom: "Excés de Convivència",         desc: "Has descobert la mort per excés de Convivència." },
+            { id: "logro_mort_diners_0",           img: "/assets/img/deaths/muerte_educacio_0.png", nom: "Bancarrota",                   desc: "Has descobert la mort per manca de Diners." },
+            { id: "logro_mort_diners_100",         img: "/assets/img/deaths/muerte_educacio_0.png", nom: "Investigació per Malversació", desc: "Has descobert la mort per excés de Diners." },
+        ],
+        arcs: [
+            { id: "logro_arc_1", img: "/assets/img/deaths/muerte_educacio_0.png", nom: "Primer Arc", desc: "Has obert el primer arc narratiu." },
+            { id: "logro_arc_2", img: "/assets/img/deaths/muerte_educacio_0.png", nom: "Segon Arc",  desc: "Has obert el segon arc narratiu." },
+        ],
+        especials: [
+            { id: "logro_inspector", img: "/assets/img/deaths/muerte_educacio_0.png", nom: "Visita Sorpresa", desc: "T'has trobat amb l'inspector per primera vegada." },
+        ]
+    };
+
+    function renderLogro(logro) {
+        const desblocat = !!localStorage.getItem(logro.id);
+        return `
+            <div class="logro-item ${desblocat ? '' : 'blocat'}">
+                <div class="logro-icon-wrap">
+                    <img src="${logro.img}" alt="${logro.nom}">
+                    <div class="logro-lock-overlay">🔒</div>
+                </div>
+                <div class="logro-texts">
+                    <span class="logro-name">${desblocat ? logro.nom : '???'}</span>
+                    <span class="logro-desc">${desblocat ? logro.desc : 'Encara no desbloquejat.'}</span>
+                </div>
+            </div>`;
+    }
+
+    const CONTINGUTS = {
+        credits: `
+            <h3 class="popup-title">CRÈDITS</h3>
+            <div class="credits-list">
+                <div class="credit-item">
+                    <span class="name">ERIC FUENTES</span>
+                    <span class="role">Programador, Dissenyador e Ideador</span>
+                </div>
+                <div class="credit-item">
+                    <span class="name">RUBÉN ARÍN</span>
+                    <span class="role">Ideador de Cartes</span>
+                </div>
+            </div>`,
+        logros: () => `
+            <h3 class="popup-title">LOGROS</h3>
+            <p class="logros-section-title">— Morts —</p>
+            ${LOGROS.morts.map(renderLogro).join('')}
+            <p class="logros-section-title">— Arcs —</p>
+            ${LOGROS.arcs.map(renderLogro).join('')}
+            <p class="logros-section-title">— Especials —</p>
+            ${LOGROS.especials.map(renderLogro).join('')}`
+    };
+
+    function obrirPopup(tipus) {
+        const content = document.getElementById('popup-content');
+        const contingut = CONTINGUTS[tipus];
+        content.innerHTML = typeof contingut === 'function' ? contingut() : contingut;
+        document.getElementById('popup-overlay').classList.add('visible');
+    }
+
+    function tancarPopup() {
+        document.getElementById('popup-overlay').classList.remove('visible');
+    }
 </script>
 </body>
 </html>
