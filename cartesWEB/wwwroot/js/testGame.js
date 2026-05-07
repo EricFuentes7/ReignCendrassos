@@ -76,7 +76,7 @@ let banderasActivas = new Set([
 const ARCS = {
     "XaviSala":       { activeFlag: "xavi_activo" },
     "RosaCavalle":    { activeFlag: "rosa_activa" },
-    "CoralPlanaguma": { activeFlag: "coral_activa", blockedByFlag: "xavi_vuelve" },
+    "CoralPlanaguma": { activeFlag: "coral_activa" },
     "AndreaAndaluz":  { activeFlag: "andrea_substituta" },
 };
 
@@ -155,11 +155,12 @@ function obtenerCartaAleatoria() {
         const arc = ARCS[carta.character];
         if (arc) {
             if (!banderasActivas.has(arc.activeFlag)) {
-                // Personatge "fora": només mostrem cartes amb requiresFlag propi actiu
-                // (p.ex. cartes de "retorn" que requereixen el flag de substitut)
+                // Personatge "fora": només cartes amb requiresFlag propi actiu
                 if (!carta.requiresFlag || !banderasActivas.has(carta.requiresFlag)) return false;
+            } else {
+                // Personatge "actiu": bloquejar cartes de transició que requereixen un flag diferent
+                if (carta.requiresFlag && carta.requiresFlag !== arc.activeFlag) return false;
             }
-            if (arc.blockedByFlag && banderasActivas.has(arc.blockedByFlag)) return false;
         }
 
         return true;
