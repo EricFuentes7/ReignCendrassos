@@ -64,15 +64,6 @@ let banderasActivas = new Set([
 ]);
 
 // ─── ARCS DE PERSONATGES ──────────────────────────────────────────────────────
-// Per afegir un personatge amb arc:
-//   "NomCharacter": { activeFlag: "flag_que_l_activa" }
-//
-// Per bloquejar un personatge mentre un altre flag és actiu, afegeix blockedByFlag:
-//   "NomCharacter": { activeFlag: "flag_que_l_activa", blockedByFlag: "flag_que_el_bloqueja" }
-//
-// Les cartes de "retorn" (quan el personatge torna après d'haver marxat) han de tenir
-// requiresFlag apuntant al flag que indica que el personatge és fora (p.ex. "andrea_substituta").
-// ─────────────────────────────────────────────────────────────────────────────
 const ARCS = {
     "XaviSala":       { activeFlag: "xavi_activo" },
     "RosaCavalle":    { activeFlag: "rosa_activa" },
@@ -108,6 +99,45 @@ setStatIcon('capacitatsClau', 'assets/img/stats/CapacitatsClau_Test.png');
 setStatIcon('convivencia', 'assets/img/stats/Convivencia_Test.png');
 setStatIcon('diners', 'assets/img/stats/Diners_Test.png');
 
+// --- PRECARGA DE IMÁGENES ---
+function precargarImagenes(personajes) {
+    const promesasPersonajes = personajes.map(personaje => {
+        return new Promise((resolve) => {
+            if (!personaje.image) {
+                resolve(); 
+                return;
+            }
+            const img = new Image();
+            img.src = personaje.image;
+            img.onload = resolve;
+            img.onerror = resolve; 
+        });
+    });
+
+    const imagenesExtra = [
+        'assets/img/characters/Back_test.png',
+        '/assets/img/deaths/muerte_capacitatsClau_0.png',
+        '/assets/img/deaths/muerte_capacitatsClau_100.png',
+        '/assets/img/deaths/muerte_educacio_0.png',
+        '/assets/img/deaths/muerte_educacio_100.png',
+        '/assets/img/deaths/muerte_convivencia_0.png',
+        '/assets/img/deaths/muerte_convivencia_100.png',
+        '/assets/img/deaths/muerte_diners_0.png',
+        '/assets/img/deaths/muerte_diners_100.png'
+    ];
+
+    const promesasExtra = imagenesExtra.map(src => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = resolve;
+            img.onerror = resolve;
+        });
+    });
+
+    return Promise.all([...promesasPersonajes, ...promesasExtra]);
+}
+
 // --- DATA FETCHING ---
 async function inicializarJuego() {
     try {
@@ -118,6 +148,11 @@ async function inicializarJuego() {
 
         todasLasCartas = await cartasRes.json();
         todosLosPersonajes = await personajesRes.json();
+
+        const loadingText = document.querySelector('.loading-text');
+        if (loadingText) loadingText.textContent = "CARREGANT IMATGES...";
+
+        await precargarImagenes(todosLosPersonajes);
 
         updateStats();
         prepararSiguienteCarta(true);
@@ -143,7 +178,6 @@ async function inicializarJuego() {
 // --- GAME LOGIC ---
 function obtenerCartaAleatoria() {
     const cartasValidas = todasLasCartas.filter(carta => {
-        // Excloure sempre les cartes de tutorial del joc normal
         if (carta.isTutorial) return false;
 
         if (!carta.isRepeatable && cartasJugadas.has(carta.id)) return false;
@@ -155,10 +189,8 @@ function obtenerCartaAleatoria() {
         const arc = ARCS[carta.character];
         if (arc) {
             if (!banderasActivas.has(arc.activeFlag)) {
-                // Personatge "fora": només cartes amb requiresFlag propi actiu
                 if (!carta.requiresFlag || !banderasActivas.has(carta.requiresFlag)) return false;
             } else {
-                // Personatge "actiu": bloquejar cartes de transició que requereixen un flag diferent
                 if (carta.requiresFlag && carta.requiresFlag !== arc.activeFlag) return false;
             }
         }
@@ -177,7 +209,6 @@ function obtenerCartaAleatoria() {
 
 function prepararSiguienteCarta(esInicio = false) {
     if (esInicio) {
-        // Si és la primera vegada, comencem pel tutorial
         if (!localStorage.getItem('tutorialMostrat')) {
             localStorage.setItem('tutorialMostrat', 'true');
             const tutorialCards = todasLasCartas
@@ -186,13 +217,11 @@ function prepararSiguienteCarta(esInicio = false) {
 
             if (tutorialCards.length > 0) {
                 cartaActualObj = tutorialCards[0];
-                // Usem el nextCardId real per mostrar el personatge correcte al fons
                 const firstNextId = tutorialCards[0].left.nextCardId;
                 proximaCartaObj = todasLasCartas.find(c => c.id === firstNextId) || obtenerCartaAleatoria();
                 return;
             }
         }
-        // Partida normal (o ja ha vist el tutorial)
         cartaActualObj = obtenerCartaAleatoria();
         proximaCartaObj = obtenerCartaAleatoria();
     } else {
@@ -304,7 +333,6 @@ hammer.on('panend', (e) => {
         const accionTomada = cartaActualObj[decision];
         const efectos = accionTomada.effects;
 
-        // Si és carta de tutorial no apliquem stats ni banderes ni setmanes
         const esTutorial = !!cartaActualObj.isTutorial;
 
         if (!esTutorial) {

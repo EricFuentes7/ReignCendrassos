@@ -1,7 +1,7 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Inicio";
+    ViewData["Title"] = "Reign Cendrassos";
     Layout = null;
 }
 
@@ -9,14 +9,98 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <!-- El viewport está bien, previene zoom indeseado -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="/css/inicio.css" asp-append-version="true">
     <style>
-        /* --- BOTÓ SECUNDARI D'ACCIÓ --- */
-        .action-button.secondary-action {
-            background-color: #a89a85;
-            color: #3b302a;
+        /* FUENTES */
+        @@font-face {
+            font-family: 'OCR-A';
+            src: url('/assets/fonts/OCR A Std.ttf') format('truetype');
+        }
+
+        /* RESET */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'OCR-A', sans-serif;
+        }
+
+        /* --- FIX RESPONSIVE PARA MÓVILES --- */
+body {
+    background: #000000;
+    height: 100vh;
+    height: 100dvh; 
+    width: 100%;
+    overflow: hidden;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+        #desktop-bg {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 30%, #202d4d 0%, #060912 70%);
+            z-index: -1;
+        }
+
+        #app {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #game {
+            width: 100%; /* Cambiado de 101% a 100% para evitar desbordes */
+            height: 100%; /* Cambiado de 101% a 100% */
+            max-width: 392px;
+            max-height: 782px;
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        #main-content {
+            flex: 1; /* Ocupa el espacio restante */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            /* CLAVE: Si el contenido es más alto que la pantalla, esta zona 
+               hará scroll y no empujará la barra inferior fuera de la vista */
+            overflow-y: auto; 
+        }
+
+        /* Ocultar barra de scroll en main-content para estética de app */
+        #main-content::-webkit-scrollbar { display: none; }
+        #main-content { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .main-img {
+            width: 100%;
+            max-width: 340px;
+            margin-bottom: 30px;
+            flex-shrink: 0; /* Evita que la imagen se aplaste */
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 300px;
+            flex-shrink: 0;
+        }
+
+        .action-button {
             border: none;
             padding: 15px 20px;
             font-size: 16px;
@@ -26,130 +110,66 @@
             letter-spacing: 0.05em;
             width: 100%;
             text-align: center;
+        }
+
+        .action-button.primary { background-color: #e2d2ba; color: #3b302a; }
+        .action-button.primary:active { background-color: #d8c4ab; }
+
+        .action-button.secondary-action {
+            background-color: #a89a85;
+            color: #3b302a;
             font-family: 'OCR-A', sans-serif;
         }
         .action-button.secondary-action:active { background-color: #978870; }
 
-        /* --- POPUP OVERLAY --- */
-        #popup-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        #popup-overlay.visible { display: flex; }
-
-        #popup-box {
-            background: #a89a85;
-            border-radius: 2px;
-            width: 88%;
-            max-width: 340px;
-            max-height: 75vh;
+        /* --- BARRA INFERIOR FIJA --- */
+        #bottom-bar {
+            background-color: #241404;
+            padding: 20px 25px;
+            height: 110px;
             display: flex;
             flex-direction: column;
-            position: relative;
-            padding: 20px 16px 16px;
+            justify-content: center;
+            flex-shrink: 0; /* CLAVE: Evita que la barra se comprima */
+            width: 100%;
         }
 
-        #popup-close {
-            position: absolute;
-            top: 8px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 16px;
-            color: #3b302a;
-            cursor: pointer;
-            font-family: 'OCR-A', sans-serif;
-        }
+        #bottom-bar p { color: #F7F4BF; font-size: 18px; margin-bottom: 4px; }
+        #subtitle-text { font-size: 13px; color: #8B7A4E; letter-spacing: 0.1em; text-transform: uppercase; }
 
-        #popup-content {
-            overflow-y: auto;
+        /* --- POPUP --- */
+        #popup-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;
         }
+        #popup-overlay.visible { display: flex; }
+        #popup-box {
+            background: #a89a85; border-radius: 2px; width: 88%; max-width: 340px; max-height: 75vh; display: flex; flex-direction: column; position: relative; padding: 20px 16px 16px;
+        }
+        #popup-close { position: absolute; top: 8px; right: 10px; background: none; border: none; font-size: 16px; color: #3b302a; cursor: pointer; }
+        #popup-content { overflow-y: auto; }
         #popup-content::-webkit-scrollbar { width: 4px; }
         #popup-content::-webkit-scrollbar-thumb { background: #6d6457; }
 
-        /* --- CRÈDITS DINS POPUP --- */
-        .popup-title {
-            font-size: 13px;
-            color: #3b302a;
-            text-align: center;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #6d6457;
-            padding-bottom: 5px;
-            letter-spacing: 2px;
-            font-family: 'OCR-A', sans-serif;
-        }
+        /* --- CRÈDITS --- */
+        .popup-title { font-size: 13px; color: #3b302a; text-align: center; margin-bottom: 12px; border-bottom: 1px solid #6d6457; padding-bottom: 5px; letter-spacing: 2px; }
         .credits-list { display: flex; flex-direction: column; gap: 12px; }
         .credit-item { display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .credit-item .name { font-size: 13px; color: #241404; margin-bottom: 2px; font-family: 'OCR-A', sans-serif; }
-        .credit-item .role { font-size: 10px; color: #5a4d3f; text-transform: uppercase; font-family: 'OCR-A', sans-serif; }
+        .credit-item .name { font-size: 13px; color: #241404; margin-bottom: 2px; font-weight: bold; }
+        .credit-item .role { font-size: 10px; color: #5a4d3f; text-transform: uppercase; }
 
         /* --- LOGROS --- */
-        .logros-section-title {
-            font-size: 10px;
-            color: #5a4d3f;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin: 12px 0 6px;
-            font-family: 'OCR-A', sans-serif;
-        }
+        .logros-section-title { font-size: 10px; color: #5a4d3f; letter-spacing: 2px; text-transform: uppercase; margin: 12px 0 6px; }
         .logros-section-title:first-of-type { margin-top: 0; }
-
-        .logro-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 10px;
-            margin-bottom: 5px;
-            border-radius: 2px;
-            background: #c4b49a;
-        }
-        .logro-item.blocat {
-            background: #8a7d6b;
-        }
-        .logro-icon-wrap {
-            position: relative;
-            flex-shrink: 0;
-            width: 40px;
-            height: 40px;
-        }
-        .logro-icon-wrap img {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 4px;
-            display: block;
-        }
-        .logro-item.blocat .logro-icon-wrap img {
-            filter: grayscale(100%) brightness(0.5);
-        }
-        .logro-lock-overlay {
-            display: none;
-            position: absolute;
-            inset: 0;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-        .logro-item.blocat .logro-lock-overlay {
-            display: flex;
-        }
+        .logro-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 5px; border-radius: 2px; background: #c4b49a; }
+        .logro-item.blocat { background: #8a7d6b; }
+        .logro-icon-wrap { position: relative; flex-shrink: 0; width: 40px; height: 40px; }
+        .logro-icon-wrap img { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; display: block; }
+        .logro-item.blocat .logro-icon-wrap img { filter: grayscale(100%) brightness(0.5); }
+        .logro-lock-overlay { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; font-size: 16px; }
+        .logro-item.blocat .logro-lock-overlay { display: flex; }
         .logro-texts { display: flex; flex-direction: column; }
-        .logro-name {
-            font-size: 11px;
-            color: #100800;
-            font-family: 'OCR-A', sans-serif;
-        }
-        .logro-desc {
-            font-size: 9px;
-            color: #2a1f10;
-            font-family: 'OCR-A', sans-serif;
-            margin-top: 2px;
-        }
+        .logro-name { font-size: 11px; color: #100800; }
+        .logro-desc { font-size: 9px; color: #2a1f10; margin-top: 2px; }
         .logro-item.blocat .logro-name { color: #2a2018; }
         .logro-item.blocat .logro-desc { color: #3a2f20; }
     </style>
@@ -175,14 +195,15 @@
                         LOGROS
                     </button>
                 </div>
+            </div>
 
+            <!-- Colocado FUERA de #main-content pero DENTRO de #game -->
             <!-- POPUP OVERLAY -->
             <div id="popup-overlay" onclick="tancarPopup()">
                 <div id="popup-box" onclick="event.stopPropagation()">
                     <button id="popup-close" onclick="tancarPopup()">✕</button>
                     <div id="popup-content"></div>
                 </div>
-            </div>
             </div>
 
             <div id="bottom-bar">
