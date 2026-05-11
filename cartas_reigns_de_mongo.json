@@ -4657,6 +4657,9 @@
     "character": "IvanMartinez",
     "text": "He adoptat un nen, m'agafo la baixa per paternitat indefinida.",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Bona sort, felicitats!",
       "nextCardId": null,
@@ -4665,7 +4668,9 @@
         "convivencia": 5,
         "diners": -10,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Bueno...",
@@ -4675,7 +4680,9 @@
         "convivencia": -5,
         "diners": -10,
         "capacitatsClau": -5
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4683,6 +4690,9 @@
     "character": "IvanMartinez",
     "text": "Aquest any faig webs a SMX, pero no estic molt segur de si sabre fer-ho.",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Ho deixem per algú mes qualificat",
       "nextCardId": null,
@@ -4691,7 +4701,9 @@
         "convivencia": -5,
         "diners": -10,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Prova, no podem pagar a ningu més",
@@ -4701,7 +4713,9 @@
         "convivencia": 5,
         "diners": 5,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4709,6 +4723,9 @@
     "character": "IvanMartinez",
     "text": "Tinc una idea pel projecte de SMX, farem Odoo. És divertidíssim!",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Endavant amb Odoo!",
       "nextCardId": null,
@@ -4717,7 +4734,9 @@
         "convivencia": -10,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Estàs boig?",
@@ -4727,7 +4746,9 @@
         "convivencia": 5,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4735,6 +4756,9 @@
     "character": "IvanMartinez",
     "text": "S'ha espatllat el projector de la 305. No podem fer classe fins que no ho arreglem.",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Arregla-ho avui mateix",
       "nextCardId": null,
@@ -4743,7 +4767,9 @@
         "convivencia": 0,
         "diners": -5,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "No ens podem permetre un altre",
@@ -4753,7 +4779,9 @@
         "convivencia": -5,
         "diners": 5,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4761,6 +4789,9 @@
     "character": "IvanMartinez",
     "text": "Estic fins dalt de corregir 100 pàgines de projecte. Penso posar un 3 a tots i que reclamin si volen.",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Sigues just, corregeix-los com toca",
       "nextCardId": null,
@@ -4769,7 +4800,9 @@
         "convivencia": 10,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Tots un 3, que reclamin",
@@ -4779,7 +4812,9 @@
         "convivencia": -10,
         "diners": 5,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4787,6 +4822,9 @@
     "character": "IvanMartinez",
     "text": "No sé configurar el servidor de correu del centre i no vull que ningú s'enteri.",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Els alumnes no s'adonaran",
       "nextCardId": null,
@@ -4795,7 +4833,9 @@
         "convivencia": 0,
         "diners": 0,
         "capacitatsClau": -5
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Aprèn a fer-ho",
@@ -4805,7 +4845,9 @@
         "convivencia": -5,
         "diners": -5,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4813,6 +4855,9 @@
     "character": "IvanMartinez",
     "text": "Els alumnes han posat la meva cara a l'etiqueta d'una samarreta i la venen pel passadís.",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Suspèn-los a tots!",
       "nextCardId": null,
@@ -4821,7 +4866,9 @@
         "convivencia": -15,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Ea que ets molt guapo",
@@ -4831,7 +4878,9 @@
         "convivencia": 10,
         "diners": 0,
         "capacitatsClau": -5
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4839,6 +4888,9 @@
     "character": "IvanMartinez",
     "text": "Els alumnes han muntat una revolta al passadís per culpa del projecte final. Ja no controlem la situació.",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Manteniu-los a ratlla",
       "nextCardId": null,
@@ -4847,7 +4899,9 @@
         "convivencia": -15,
         "diners": 0,
         "capacitatsClau": 10
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Truqueu al 112",
@@ -4857,7 +4911,9 @@
         "convivencia": -5,
         "diners": -10,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4865,6 +4921,9 @@
     "character": "GenisDeTuero",
     "text": "No me'n recordo del meu nom d'usuari de GitHub i no puc corregir el projecte de DAW.",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Ja ho faran els altres professors",
       "nextCardId": null,
@@ -4873,7 +4932,9 @@
         "convivencia": -5,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Busca-la i corregeix com toca",
@@ -4883,7 +4944,9 @@
         "convivencia": -5,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4891,6 +4954,9 @@
     "character": "GenisDeTuero",
     "text": "Un alumne s'ha caigut per les escales i haurà d'estar uns dies de baixa. Qué fem?",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "GG",
       "nextCardId": null,
@@ -4899,7 +4965,9 @@
         "convivencia": -10,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Que agafi el temps que necessiti",
@@ -4909,7 +4977,9 @@
         "convivencia": 10,
         "diners": -5,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4917,6 +4987,9 @@
     "character": "DaniHerrera",
     "text": "He retat els meus alumnes a ping pong i els he guanyat a tots un per un. Quin dia!",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Olé, campió!",
       "nextCardId": null,
@@ -4925,7 +4998,9 @@
         "convivencia": 10,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Quina falta de professionalitat",
@@ -4935,7 +5010,9 @@
         "convivencia": -5,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4943,7 +5020,9 @@
     "character": "CoralPlanaguma",
     "text": "Els alumnes m'han demanat que torni. Una pena que la plaça ja estigui ocupada...",
     "isRepeatable": true,
+    "requiresCardId": null,
     "requiresFlag": "xavi_vuelve",
+    "isTutorial": null,
     "left": {
       "label": "Ho tindrem en compte",
       "nextCardId": null,
@@ -4952,7 +5031,9 @@
         "convivencia": 5,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Les places no funcionen així",
@@ -4962,7 +5043,9 @@
         "convivencia": -5,
         "diners": 0,
         "capacitatsClau": 5
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4970,7 +5053,9 @@
     "character": "CoralPlanaguma",
     "text": "Els alumnes m'han convidat a l'hort d'en Pol Casiñol fora de l'horari lectiu. Hi vaig?",
     "isRepeatable": true,
+    "requiresCardId": null,
     "requiresFlag": "coral_activa",
+    "isTutorial": null,
     "left": {
       "label": "Això no és gaire professional",
       "nextCardId": null,
@@ -4979,7 +5064,9 @@
         "convivencia": -5,
         "diners": 0,
         "capacitatsClau": 5
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Fes el que volguis fora",
@@ -4989,7 +5076,9 @@
         "convivencia": 15,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -4997,7 +5086,9 @@
     "character": "CoralPlanaguma",
     "text": "Directora, saps qui és el noi al que li ha donat un infart? Ningú vol dir res.",
     "isRepeatable": true,
+    "requiresCardId": null,
     "requiresFlag": "coral_activa",
+    "isTutorial": null,
     "left": {
       "label": "Investiga",
       "nextCardId": null,
@@ -5006,10 +5097,99 @@
         "convivencia": 5,
         "diners": -5,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Si no parlen, problema seu",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": -10,
+        "diners": 0,
+        "capacitatsClau": -5
+      },
+      "setFlag": null,
+      "removeFlag": null
+    }
+  },
+  {
+    "id": 156,
+    "character": "CoralPlanaguma",
+    "text": "Hi ha un alumne que li costa més seguir el ritme de la classe. Necessita atenció extra.",
+    "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": "coral_activa",
+    "isTutorial": null,
+    "left": {
+      "label": "Ajuda'l en el que necessiti",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": 5,
+        "diners": -5,
+        "capacitatsClau": 0
+      },
+      "setFlag": null,
+      "removeFlag": null
+    },
+    "right": {
+      "label": "Que s'espabili com els altres",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 0
+      },
+      "setFlag": null,
+      "removeFlag": null
+    }
+  },
+  {
+    "id": 157,
+    "character": "SilviaLlado",
+    "text": "Els alumnes no volen fer PHP, diuen que és una merda, hauríem de canviar?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Sí, a un altre llenguatge",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": 15,
+        "diners": -5,
+        "capacitatsClau": 5
+      }
+    },
+    "right": {
+      "label": "No, PHP a mort!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": -15,
+        "diners": 0,
+        "capacitatsClau": -5
+      }
+    }
+  },
+  {
+    "id": 158,
+    "character": "SilviaLlado",
+    "text": "He estat ajudant tant als alumnes que m'he quedat adormida a la sala de profes. Necessitem una màquina de cafè nova.",
+    "isRepeatable": true,
+    "left": {
+      "label": "D'acord, en compro una",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": 15,
+        "diners": -15,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "A dormir a la teva casa",
       "nextCardId": null,
       "effects": {
         "educacio": -5,
@@ -5020,27 +5200,757 @@
     }
   },
   {
-    "id": 156,
-    "character": "CoralPlanaguma",
-    "text": "Hi ha un alumne que li costa més seguir el ritme de la classe. Necessita atenció extra.",
+    "id": 159,
+    "character": "JuackyRubio",
+    "text": "He descobert que un alumne fa les pràctiques a l'empresa del seu avi, es passa les 4 hores jugant. Li cancel·lo el conveni?",
     "isRepeatable": true,
-    "requiresFlag": "coral_activa",
     "left": {
-      "label": "Ajuda'l en el que necessiti",
+      "label": "Sí, cancel·la-ho!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 15,
+        "convivencia": -15,
+        "diners": 0,
+        "capacitatsClau": 10
+      }
+    },
+    "right": {
+      "label": "Fes els ulls grossos...",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -15,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": -15
+      }
+    }
+  },
+  {
+    "id": 160,
+    "character": "ManelArrabal",
+    "text": "Ningú m'ha lliurat la memòria del Projecte Final, només m'han passat el codi i em diuen 'ja s'entén sol'.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Suspèn-los a tots!",
       "nextCardId": null,
       "effects": {
         "educacio": 10,
+        "convivencia": -20,
+        "diners": 0,
+        "capacitatsClau": 10
+      }
+    },
+    "right": {
+      "label": "Si el codi funciona, aprova'ls",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 15,
+        "diners": 0,
+        "capacitatsClau": 10
+      }
+    }
+  },
+  {
+    "id": 161,
+    "character": "DaniRayos",
+    "text": "Els alumnes porten mitja hora intentant centrar un div, no sé què fer...",
+    "isRepeatable": true,
+    "left": {
+      "label": "Dona'ls la solució",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": -5
+      }
+    },
+    "right": {
+      "label": "Que pateixin una mica més",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 162,
+    "character": "XaviVallejo",
+    "text": "Estàvem practicant a la terminal de Linux i un alumne ha executat 'rm -rf /' al servidor de proves. Ho hem perdut tot.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Expulsió immediata!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": -15,
+        "diners": 0,
+        "capacitatsClau": 10
+      }
+    },
+    "right": {
+      "label": "És culpa teva, configura-ho bé",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": -5,
+        "diners": -15,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 163,
+    "character": "XaviVallejo",
+    "text": "Hi ha una guerra a classe entre els que defensen Windows i els que defensen Linux. S'estan insultant. Qui té raó?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Evidentment, Windows!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Evidentment, Linux!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": -10,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 164,
+    "character": "IvanMartinez",
+    "text": "Per al CatSkills que es fa al centre hem de programar un servidor en xarxa, no vull. Busco a algun alumne que ho fassi?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Vale, a en Pau Morales i l'Eric",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": -10,
+        "diners": 10,
+        "capacitatsClau": -5
+      }
+    },
+    "right": {
+      "label": "No, per això et paguem!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -10,
+        "diners": -5,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 165,
+    "character": "GenisDeTuero",
+    "text": "Hem comprat un mega servidor per la web del Cendrassos, però el repartidor l'ha trencat i no ens hem assabentat.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Compra'n un de nou",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 0,
+        "diners": -25,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Retorna'l i migra-ho a AWS",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 0,
+        "diners": 20,
+        "capacitatsClau": 5
+      }
+    }
+  },
+  {
+    "id": 166,
+    "character": "DaniPrados",
+    "text": "Estem pensant a on anar a menjar després del webmentos, què podríem suggerir?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Menú de 28 euros a un bar mediocre",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
         "convivencia": 5,
+        "diners": -20,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Pizzes de mig metre a l'Origano",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": 15,
+        "diners": -10,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 167,
+    "character": "JesusPicornell",
+    "text": "Els ordinadors de les aules han petat, s'han quedat sense grub. Com ho reparem?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Utilitza boot repair",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": 0,
+        "diners": 0,
+        "capacitatsClau": 10
+      }
+    },
+    "right": {
+      "label": "Utilitza bananaOS",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -10,
+        "convivencia": 0,
+        "diners": 0,
+        "capacitatsClau": -5
+      }
+    }
+  },
+  {
+    "id": 168,
+    "character": "CoralPlanaguma",
+    "text": "M'havien dit que aquest treball era d'analista de dades...",
+    "isRepeatable": true,
+    "requiresFlag": "coral_activa",
+    "left": {
+      "label": "T'hem mentit, ets professora",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -15,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "T'hauràs confós, benvinguda",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 169,
+    "character": "ManelArrabal",
+    "text": "Un alumne m'ha enviat un vídeo de 50 minuts explicant el seu treball final de síntesi, no sé si me'l puc veure sencer.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Mira-te'l sencer, és la teva feina!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -10,
+        "diners": 0,
+        "capacitatsClau": 5
+      }
+    },
+    "right": {
+      "label": "Posa-li un 10 directament",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": -5
+      }
+    }
+  },
+  {
+    "id": 170,
+    "character": "GenisDeTuero",
+    "text": "Alguns llestos estan minant criptomonedes amb els ordinadors de l'aula de muntatge. Tallo el corrent?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Talla-ho tot ara mateix!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -5,
+        "diners": -10,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Deixa'ls fer i demana un percentatge",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -5,
+        "diners": 15,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 171,
+    "character": "JuackyRubio",
+    "text": "L'alumne de pràctiques ha esborrat l'Active Directory de l'empresa on estava. El Jefe vol parlar amb vostè.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Demana disculpes formals",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -15,
         "diners": -5,
         "capacitatsClau": 0
       }
     },
     "right": {
-      "label": "Que s'espabili com els altres",
+      "label": "Dona totes les culpes a l'alumne",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -10,
+        "convivencia": -15,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 172,
+    "character": "FranGrano",
+    "text": "He descobert que la cantina de l'institut està evadint impostos i no emeten factura dels entrepans de pernil. Ho denunciem?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Sí, a Hisenda directes!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -15,
+        "diners": 15,
+        "capacitatsClau": 5
+      }
+    },
+    "right": {
+      "label": "Fes xantatge per entrepans gratis",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -5,
+        "diners": 10,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 173,
+    "character": "DaniHerrera",
+    "text": "Treballar és una merda, prefereixo jugar al Valorant, m'ho passo millor.",
+    "isRepeatable": true,
+    "left": {
+      "label": "A jugar doncs!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -10,
+        "convivencia": 5,
+        "diners": 0,
+        "capacitatsClau": -5
+      }
+    },
+    "right": {
+      "label": "Posa't a treballar!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 5
+      }
+    }
+  },
+  {
+    "id": 174,
+    "character": "AndreaAndaluz",
+    "text": "Em pregunten els meus alumnes que si tinc xarxes socials, em volen enviar reels de 'brainrots'.",
+    "isRepeatable": true,
+    "requiresFlag": "andrea_substituta",
+    "left": {
+      "label": "Accepta i mira'ls amb ells",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -10,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Prohibit l'ús del mòbil!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -10,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 175,
+    "character": "AlbertSabria",
+    "text": "Algú de la sala de professors s'ha menjat la bossa de Doritos que tenia amagada al calaix. Sé que has estat tu, directora.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Ho admeto, tenia gana",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -10,
+        "diners": -5,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "T'ho estàs inventant!",
       "nextCardId": null,
       "effects": {
         "educacio": -5,
+        "convivencia": -15,
+        "diners": 0,
+        "capacitatsClau": -5
+      }
+    }
+  },
+  {
+    "id": 176,
+    "character": "XaviVallejo",
+    "text": "De quina temàtica podria ser el següent examen de sistemes operatius?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Supervivència Zombie",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": 5
+      }
+    },
+    "right": {
+      "label": "Clàssic i avorrit",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
         "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 177,
+    "character": "AlbertIbiza",
+    "text": "He vist al Pol Casiñol intentant desxifrar la WiFi dels professors utilitzant Wireshark al mig del passadís.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Canvia la contrasenya ràpid!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 5
+      }
+    },
+    "right": {
+      "label": "Tranquil, no farà molt...",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 178,
+    "character": "JaumePujol",
+    "text": "Els alumnes es queixen que a l'examen de PowerShell no poden utilitzar comandes de CMD, diuen que és el mateix.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Res de CMD",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Deixa'ls utilitzar-les",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 5,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 179,
+    "character": "AlbertSabria",
+    "text": "Quan treballava al FC Girona era més feliç que ara.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Torna-hi doncs!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "No ploris",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -10,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 180,
+    "character": "SilviaLlado",
+    "text": "Els alumnes utilitzen Tailwind CSS, crec que és perquè fan els treballs amb IA.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Fes-los programar en CSS pur",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 15,
+        "convivencia": -10,
+        "diners": 0,
+        "capacitatsClau": 10
+      }
+    },
+    "right": {
+      "label": "És el futur, deixa'ls",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 5,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 181,
+    "character": "DaniRayos",
+    "text": "Els de classe m'estan preguntant si HTML és un llenguatge de programació.",
+    "isRepeatable": true,
+    "left": {
+      "label": "No ho és!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "No passa res, ja n'aprendran",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 182,
+    "character": "XaviVallejo",
+    "text": "Un alumne ha instal·lat Arch Linux a l'ordinador de classe i no para de dir-ho en veu alta cada cinc minuts. 'I use Arch, btw'.",
+    "isRepeatable": true,
+    "left": {
+      "label": "bliga'l a posar Windows",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": -15,
+        "diners": 0,
+        "capacitatsClau": 5
+      }
+    },
+    "right": {
+      "label": "Dona-li una medalla",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 183,
+    "character": "JesusPicornell",
+    "text": "Ubuntu ha tornat a bloquejar les IPs del centre per tantes baixades d'ISO, els alumnes estan sense fer res.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Aprofiteu per fer una pausa",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -10,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Instal·leu Debian aleshores!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 5,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 184,
+    "character": "AndreaAndaluz",
+    "text": "En Genís m'ha regalat una ensaïmada a l'hora del pati, crec que vol amb mi.",
+    "isRepeatable": true,
+    "requiresFlag": "andrea_substituta",
+    "left": {
+      "label": "Aprofita l'esmorzar gratuït",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": 10,
+        "diners": 5,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Alerta a Recursos Humans!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 0,
+        "convivencia": -15,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 185,
+    "character": "DaniHerrera",
+    "text": "Hauria de deixar l'educació per dedicar-me professionalment al ping pong?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Definitivament",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": 10,
+        "diners": 10,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "L'educació és més important",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -5,
+        "diners": 5,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 186,
+    "character": "DaniHerrera",
+    "text": "M'he infiltrat a la DGT per aconseguir la base de dades per mirar accidents.",
+    "isRepeatable": true,
+    "left": {
+      "label": "Molt bé, així estalviem en material",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": 10,
+        "diners": 10,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Truca a la policia",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -5,
+        "convivencia": -15,
+        "diners": -5,
+        "capacitatsClau": 0
+      }
+    }
+  },
+  {
+    "id": 187,
+    "character": "DaniHerrera",
+    "text": "He fet un Kahoot amb gats, què et sembla?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Això serà una distracció més",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 15,
+        "convivencia": -5,
+        "diners": 0,
+        "capacitatsClau": 0
+      }
+    },
+    "right": {
+      "label": "Molt bon material didàctic!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": 15,
         "diners": 0,
         "capacitatsClau": 0
       }
