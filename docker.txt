@@ -42,3 +42,24 @@ docker exec -it mymongo mongosh -u reigns_data -p "reigns_2026_f1n4lcurs0Er!" --
 
 mongoimport --uri="mongodb+srv://reigns_data:reigns_2026_f1n4lcurs0Er!@cluster0.k2pqm1m.mongodb.net/reigns_db?appName=Cluster0" --collection cartas --file cartes_test.json --jsonArray
 mongoimport --uri="mongodb+srv://reigns_data:reigns_2026_f1n4lcurs0Er!@cluster0.k2pqm1m.mongodb.net/reigns_db?appName=Cluster0" --collection personatges --file personatges.json --jsonArray
+
+
+
+
+
+
+ó
+
+
+
+
+
+eric@2a02-9130-84a7-8d85-dc0b-8a25-03ce-0470:~/ReignCendrassos$ mongoimport --uri='mongodb+srv://reigns_data:reigns_2026_f1n4lcurs0Er!@cluster0.k2pqm1m.mongodb.net/reigns_db?appName=Cluster0' --collection personatges --file p.json --jsonArray --drop
+2026-05-13T18:09:28.954+0200	connected to: mongodb+srv://[**REDACTED**]@cluster0.k2pqm1m.mongodb.net/reigns_db?appName=Cluster0
+2026-05-13T18:09:28.983+0200	dropping: `reigns_db.personatges`
+2026-05-13T18:09:29.095+0200	27 document(s) imported successfully. 0 document(s) failed to import.
+eric@2a02-9130-84a7-8d85-dc0b-8a25-03ce-0470:~/ReignCendrassos$ mongoimport --uri='mongodb+srv://reigns_data:reigns_2026_f1n4lcurs0Er!@cluster0.k2pqm1m.mongodb.net/reigns_db?appName=Cluster0' --collection cartas --file cartas_reigns_de_mongo.json --jsonArray --drop
+2026-05-13T18:09:31.419+0200	connected to: mongodb+srv://[**REDACTED**]@cluster0.k2pqm1m.mongodb.net/reigns_db?appName=Cluster0
+2026-05-13T18:09:31.448+0200	dropping: `reigns_db.cartas`
+2026-05-13T18:09:32.282+0200	209 document(s) imported successfully. 0 document(s) failed to import.
+eric@2a02-9130-84a7-8d85-dc0b-8a25-03ce-0470:~/ReignCendrassos$ 

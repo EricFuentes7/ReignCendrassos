@@ -10,6 +10,11 @@
     "image": "assets/img/characters/Sabria_test.png"
   },
   {
+    "key": "AlexDelseny",
+    "name": "Alex Delseny",
+    "image": "assets/img/characters/Test.webp"
+  },
+  {
     "key": "AndreaAndaluz",
     "name": "Andrea Andaluz",
     "image": "assets/img/characters/Andrea_test.jpg"
@@ -68,6 +73,11 @@
     "key": "JesusPicornell",
     "name": "Jesus Picornell",
     "image": "assets/img/characters/Jesus_test.png"
+  },
+  {
+    "key": "JosepBosom",
+    "name": "Josep Bosom",
+    "image": "assets/img/characters/Test.webp"
   },
   {
     "key": "JuackyRubio",
