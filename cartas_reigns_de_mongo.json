@@ -6043,7 +6043,9 @@
     "character": "AndreaAndaluz",
     "text": "En Genís m'ha regalat una ensaïmada a l'hora del pati, crec que vol amb mi.",
     "isRepeatable": false,
+    "requiresCardId": null,
     "requiresFlag": "andrea_substituta",
+    "isTutorial": null,
     "left": {
       "label": "Aprofita l'esmorzar gratuït",
       "nextCardId": null,
@@ -6052,7 +6054,9 @@
         "convivencia": 10,
         "diners": 5,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Alerta a Recursos Humans!",
@@ -6062,7 +6066,9 @@
         "convivencia": -15,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -7556,6 +7562,8 @@
     "text": "L'ensaimada s'ha quedat a la taula, porta una setmana allà.",
     "isRepeatable": false,
     "requiresCardId": 184,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Llançala",
       "nextCardId": null,
@@ -7564,7 +7572,9 @@
         "convivencia": 5,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Menjate-la!",
@@ -7574,7 +7584,9 @@
         "convivencia": -5,
         "diners": 0,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -7582,6 +7594,9 @@
     "character": "GenisDeTuero",
     "text": "Directora, hi ha alguns alumnes que pateixen una 'diarrea mental' molt heavy.",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Dona'ls una tila i explica-ho a poc a poc",
       "nextCardId": null,
@@ -7590,7 +7605,9 @@
         "convivencia": 5,
         "diners": 0,
         "capacitatsClau": 5
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Envia'ls a pastar fang i fora del taller!",
@@ -7600,7 +7617,9 @@
         "convivencia": -10,
         "diners": 0,
         "capacitatsClau": -5
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -7608,6 +7627,9 @@
     "character": "RosaCavalle",
     "text": "Crec que en Pol hauria de deixar el cicle d'una vegada i anar a ser venedor de drons configurables. Segur que allà té molt més futur.",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Tens raó, li faré la recomanació",
       "nextCardId": null,
@@ -7616,7 +7638,9 @@
         "convivencia": 5,
         "diners": 5,
         "capacitatsClau": 0
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Ni parlar-ne, ha d'aprendre a programar",
@@ -7626,7 +7650,9 @@
         "convivencia": -5,
         "diners": -5,
         "capacitatsClau": 5
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     }
   },
   {
@@ -7634,6 +7660,9 @@
     "character": "DaniRayos",
     "text": "L'Àlex Delseny s'ha rebotat en demanar-li silenci i s'ha posat vídeos de fontaneria a tot volum a mitja classe!",
     "isRepeatable": true,
+    "requiresCardId": null,
+    "requiresFlag": null,
+    "isTutorial": null,
     "left": {
       "label": "Expulsió directa per rebel!",
       "nextCardId": null,
@@ -7642,7 +7671,9 @@
         "convivencia": -10,
         "diners": 0,
         "capacitatsClau": 5
-      }
+      },
+      "setFlag": null,
+      "removeFlag": null
     },
     "right": {
       "label": "Posa el vídeo al projector",
@@ -7652,6 +7683,60 @@
         "convivencia": 10,
         "diners": 0,
         "capacitatsClau": -5
+      },
+      "setFlag": null,
+      "removeFlag": null
+    }
+  },
+  {
+    "id": 234,
+    "character": "AlexDelseny",
+    "text": "Tinc un pringat de primer extorsionat per Discord i em pagarà 700€. Em deixes acabar el xantatge des de l'aula d'informàtica?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Si anem a mitges, endavant!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -10,
+        "convivencia": 5,
+        "diners": 15,
+        "capacitatsClau": -5
+      }
+    },
+    "right": {
+      "label": "Això és un delicte, para ja!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 5,
+        "convivencia": -10,
+        "diners": -5,
+        "capacitatsClau": 10
+      }
+    }
+  },
+  {
+    "id": 235,
+    "character": "AlexDelseny",
+    "text": "M'he fotut dos 'snus' d'estranquis a classe i estic completament rebentat. Puc anar a tancar els ulls a la biblioteca?",
+    "isRepeatable": true,
+    "left": {
+      "label": "Vés, però que no et vegin",
+      "nextCardId": null,
+      "effects": {
+        "educacio": -10,
+        "convivencia": 10,
+        "diners": 0,
+        "capacitatsClau": -5
+      }
+    },
+    "right": {
+      "label": "Ni de broma, renta't la cara!",
+      "nextCardId": null,
+      "effects": {
+        "educacio": 10,
+        "convivencia": -10,
+        "diners": 0,
+        "capacitatsClau": 5
       }
     }
   },
