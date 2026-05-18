@@ -1,51 +1,36 @@
 import os
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
-def generar_imagenes_muerte():
-    # Configuración básica
-    size = (500, 500)
-    color_fondo = "black"
-    color_texto = "white"
+def comprimir_pngs_maximo(directorio="."):
+    print("Iniciando compresión MÁXIMA de imágenes PNG...")
     
-    # Lista de conceptos y sus estados
-    conceptos = ["convivencia", "capacitatsClau", "diners", "educacio"]
-    estados = ["0", "100"]
-    
-    # Intentar cargar una fuente por defecto
-    try:
-        # En Windows suele estar en esta ruta, en Linux/Mac varía. 
-        # Si falla, usará la fuente por defecto de PIL.
-        font = ImageFont.truetype("arial.ttf", 40)
-    except:
-        font = ImageFont.load_default()
+    for nombre_archivo in os.listdir(directorio):
+        if nombre_archivo.lower().endswith(".png"):
+            ruta_completa = os.path.join(directorio, nombre_archivo)
+            
+            try:
+                # 1. Abrimos la imagen
+                imagen = Image.open(ruta_completa)
+                
+                # 2. Reducimos la paleta de colores a 256 (Pérdida visual mínima, ahorro de espacio masivo)
+                # Esto mantiene la transparencia intacta si la imagen la tiene.
+                imagen_optimizada = imagen.quantize(colors=256)
+                
+                # 3. Guardamos sobrescribiendo el archivo original
+                # compress_level=9 fuerza al algoritmo interno a comprimir los datos al máximo
+                imagen_optimizada.save(
+                    ruta_completa, 
+                    format="PNG", 
+                    optimize=True, 
+                    compress_level=9
+                )
+                
+                print(f"✅ Compresión extrema aplicada: {nombre_archivo}")
+                
+            except Exception as e:
+                print(f"❌ Error al procesar {nombre_archivo}: {e}")
 
-    print("Generando imágenes...")
-
-    for concepto in conceptos:
-        for estado in estados:
-            # Crear imagen negra
-            img = Image.new('RGB', size, color=color_fondo)
-            draw = ImageDraw.Draw(img)
-            
-            # Texto a escribir
-            texto = f"Muerte por:\n{concepto} {estado}"
-            
-            # Calcular posición para centrar el texto
-            # Usamos textbbox para versiones modernas de Pillow (9.2.0+)
-            left, top, right, bottom = draw.textbbox((0, 0), texto, font=font, align="center")
-            w, h = right - left, bottom - top
-            x = (size[0] - w) / 2
-            y = (size[1] - h) / 2
-            
-            # Dibujar el texto
-            draw.multiline_text((x, y), texto, fill=color_texto, font=font, align="center")
-            
-            # Guardar la imagen
-            nombre_archivo = f"muerte_{concepto}_{estado}.png"
-            img.save(nombre_archivo)
-            print(f"Creada: {nombre_archivo}")
-
-    print("\n¡Proceso finalizado! Las 8 imágenes están en la carpeta del script.")
+    print("¡Proceso terminado!")
 
 if __name__ == "__main__":
-    generar_imagenes_muerte()
+    comprimir_pngs_maximo()
